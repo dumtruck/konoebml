@@ -89,7 +89,7 @@ If any well-known tags have special parsing/encoding rules or data structures th
 [EBML]: http://ebml.sourceforge.net/
 [mkv]: http://www.matroska.org/technical/specs/index.html
 [webm]: https://www.webmproject.org/
-[new-issue]: https://github.com/saghen/ebml-web-stream/issues/new
-[unknown size vint]: (https://www.rfc-editor.org/rfc/rfc8794.html#name-unknown-data-size)
-[ebml-web-stream]: (https://github.com/Saghen/ebml-web-stream)
-[ebml-stream]: (https://github.com/austinleroy/node-ebml)
+[new-issue]: https://github.com/dumtruck/konoebml/issues/new
+[unknown size vint]: https://www.rfc-editor.org/rfc/rfc8794.html#name-unknown-data-size
+[ebml-web-stream]: https://github.com/Saghen/ebml-web-stream
+[ebml-stream]: https://github.com/austinleroy/node-ebml
