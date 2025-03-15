@@ -2,8 +2,9 @@
   <img src="./assets/konoebml-512x512.webp" alt="logo" height=180 />
   <br />
   <b>Konoebml</b>
-  <div align="center"><img src="https://img.shields.io/npm/v/konoebml
-  " alt="version-badge" /><img src="https://img.shields.io/badge/status-beta-blue" alt="status-badge" /></div>
+  <div align="center">
+    <img src="https://img.shields.io/npm/v/konoebml" alt="version-badge" />
+    <img src="https://img.shields.io/badge/status-beta-blue" alt="status-badge" /></div>
 </h1>
 
 <p align="center"><b>A modern JavaScript implementation of RFC8794 (EBML). </b></p>
