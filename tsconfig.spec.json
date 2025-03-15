@@ -1,0 +1,29 @@
+{
+  "extends": "./tsconfig.base.json",
+  "compilerOptions": {
+    "composite": true,
+    "rootDir": ".",
+    "types": [
+      "vitest/globals",
+      "node"
+    ],
+    "noEmit": true,
+    "paths": {
+      "konoebml": [
+        "./src/index.ts"
+      ],
+      "konoebml/*": [
+        "./src/*"
+      ]
+    }
+  },
+  "files": [],
+  "include": [
+    "tests/*"
+  ],
+  "references": [
+    {
+      "path": "./tsconfig.lib.json"
+    }
+  ]
+}

@@ -1,0 +1,84 @@
+{
+  "name": "konoebml",
+  "version": "0.1.0-rc.1",
+  "description": "A modern JavaScript implementation of EBML RFC8794",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "type": "module",
+  "maintainers": [
+    "Yeheng Zhou <master@evernightfireworks.com>"
+  ],
+  "files": [
+    "dist",
+    "LICENSE",
+    "README.md"
+  ],
+  "scripts": {
+    "build": "rslib build",
+    "dev": "rslib build --watch",
+    "test": "vitest --coverage",
+    "test-ci": "vitest --watch=false --coverage",
+    "prepublishOnly": "npm run build",
+    "lint": "ultracite lint",
+    "format": "ultracite format",
+    "playground": "tsx --tsconfig=./tsconfig.example.json ./examples/playground.ts"
+  },
+  "repository": "github:dumtruck/konoebml",
+  "engines": {
+    "node": ">= 18.0.0"
+  },
+  "keywords": [
+    "ebml",
+    "webm",
+    "mkv",
+    "matroska",
+    "format",
+    "rfc8794"
+  ],
+  "devDependencies": {
+    "@biomejs/biome": "^1.9.4",
+    "@rslib/core": "^0.5.3",
+    "@swc/core": "^1.11.8",
+    "@types/jasmine": "^5.1.7",
+    "@types/node": "^22.13.10",
+    "@vitest/coverage-v8": "^3.0.8",
+    "cross-env": "^7.0.3",
+    "happy-dom": "^17.4.3",
+    "rimraf": "^6.0.1",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.8.2",
+    "ultracite": "^4.1.21",
+    "unplugin-swc": "^1.5.1",
+    "vite-tsconfig-paths": "^5.1.4",
+    "vitest": "^3.0.8"
+  },
+  "contributors": [
+    "Yeheng Zhou <master@evernightfireworks.com>",
+    "Liam Dyer <liamcdyer@gmail.com>",
+    "Austin Blake <austin.leroy@hotmail.com>",
+    "Chris Price <price.c@gmail.com>",
+    "Davy Van Deursen <d.vandeursen@evs.com>",
+    "Ed Markowski <siphon@protonmail.com>",
+    "Jonathan Sifuentes <jayands.dev@gmail.com>",
+    "Manuel Wiedenmann <manuel@funkensturm.de>",
+    "Mathias Buus <mathiasbuus@gmail.com>",
+    "Max Ogden <max@maxogden.com>",
+    "Oliver Walzer <walzer@incuray.com>",
+    "greenkeeperio-bot <support@greenkeeper.io>"
+  ],
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/dumtruck/konoebml/issues"
+  },
+  "homepage": "https://github.com/dumtruck/konoebml#readme",
+  "dependencies": {
+    "mnemonist": "^0.40.3",
+    "type-fest": "^4.37.0"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "@swc/core"
+    ]
+  }
+}
