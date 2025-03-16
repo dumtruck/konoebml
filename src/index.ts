@@ -11,7 +11,11 @@ export {
   decodeEbmlTagHeader,
   decodeEbmlContent,
 } from './decode-utils';
-export { EbmlStreamDecoder, EbmlDecodeStreamTransformer } from './decoder';
+export {
+  EbmlStreamDecoder,
+  EbmlDecodeStreamTransformer,
+  type EbmlStreamDecoderChunkType,
+} from './decoder';
 export {
   EbmlStreamEncoder,
   EbmlEncodeStreamTransformer,
@@ -19,7 +23,8 @@ export {
 export {
   EbmlBlockLacing,
   EbmlTagIdEnum,
-  type EbmlElementType,
+  EbmlElementType,
+  EbmlTagPosition,
   type EbmlBinaryDataTagIdType,
   type EbmlMasterTagIdType,
   type EbmlBlockTagIdType,
@@ -32,7 +37,6 @@ export {
   type EbmlUintDataTagIdType,
   type EbmlUtf8DataTagIdType,
   type EbmlTagIdType,
-  EbmlTagPosition,
   isEbmlBinaryDataTagId,
   isEbmlBlockTagId,
   isEbmlDateDataTagId,

@@ -15,10 +15,10 @@ process.setMaxListeners(Number.POSITIVE_INFINITY);
 const createReadStream = (file: string) =>
   Readable.toWeb(fs.createReadStream(file), {
     strategy: { highWaterMark: 100, size: (chunk) => chunk.byteLength },
-  }) as ReadableStream<ArrayBuffer>;
+  }) as ReadableStream<Uint8Array>;
 
 const makeDataStreamTest =
-  (stream: () => ReadableStream<ArrayBuffer>) =>
+  (stream: () => ReadableStream<Uint8Array>) =>
   async (cb: (tag: EbmlMasterTag | EbmlDataTag, done: () => void) => void) => {
     await new Promise((resolve, reject) => {
       stream()

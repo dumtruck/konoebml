@@ -5,8 +5,15 @@ import { decodeEbmlContent } from './decode-utils';
 import { StreamFlushReason, UnreachableOrLogicError } from './errors';
 import { dataViewSlice } from './tools';
 
+export type EbmlStreamDecoderChunkType =
+  | Uint8Array
+  | ArrayBuffer
+  | ArrayBufferLike;
+
 export class EbmlDecodeStreamTransformer
-  implements Transformer<ArrayBuffer, EbmlTagTrait>, FileDataViewController
+  implements
+    Transformer<EbmlStreamDecoderChunkType, EbmlTagTrait>,
+    FileDataViewController
 {
   private _offset = 0;
   private _buffer: Uint8Array = new Uint8Array(0);
@@ -122,17 +129,17 @@ export class EbmlDecodeStreamTransformer
     }
   }
 
-  notifyIdle() {
+  private notifyIdle() {
     if (this._tickIdleCallback) {
       this._tickIdleCallback();
     }
   }
 
-  tryEnqueueToBuffer(item: EbmlTagTrait) {
+  private tryEnqueueToBuffer(item: EbmlTagTrait) {
     this._writeBuffer.enqueue(item);
   }
 
-  waitBufferRelease(
+  private waitBufferRelease(
     ctrl: TransformStreamDefaultController<EbmlTagTrait>,
     isFlush: boolean
   ) {
@@ -144,7 +151,7 @@ export class EbmlDecodeStreamTransformer
     }
   }
 
-  async tick(
+  private async tick(
     ctrl: TransformStreamDefaultController<EbmlTagTrait>,
     isFlush: boolean
   ) {
@@ -191,7 +198,7 @@ export class EbmlDecodeStreamTransformer
   }
 
   async transform(
-    chunk: ArrayBuffer,
+    chunk: EbmlStreamDecoderChunkType,
     ctrl: TransformStreamDefaultController<EbmlTagTrait>
   ): Promise<void> {
     if (chunk.byteLength === 0) {
@@ -202,7 +209,10 @@ export class EbmlDecodeStreamTransformer
     );
 
     newBuffer.set(this._buffer, 0);
-    newBuffer.set(new Uint8Array(chunk), this._buffer.byteLength);
+    newBuffer.set(
+      chunk instanceof Uint8Array ? chunk : new Uint8Array(chunk),
+      this._buffer.byteLength
+    );
     this._buffer = newBuffer;
 
     await this.tick(ctrl, false);
@@ -214,7 +224,7 @@ export class EbmlDecodeStreamTransformer
 }
 
 export class EbmlStreamDecoder extends TransformStream<
-  ArrayBuffer,
+  EbmlStreamDecoderChunkType,
   EbmlTagTrait
 > {
   public readonly transformer: EbmlDecodeStreamTransformer;
