@@ -49,7 +49,7 @@ export {
   type EbmlFloatDataTagIdType,
   type EbmlIntDataTagIdType,
   type EbmlSimpleBlockTagIdType,
-  type EbmlAsciiDataTagIdType as EbmlStringDataTagIdType,
+  type EbmlAsciiDataTagIdType,
   type EbmlUintDataTagIdType,
   type EbmlUtf8DataTagIdType,
   type EbmlTagIdType,
@@ -66,19 +66,4 @@ export {
   isEbmlUtf8DataTagId,
   isUnknownTagId,
 } from './models/enums';
-export type {
-  EbmlUnknownTagType,
-  EbmlUintTagType,
-  EbmlUtf8TagType,
-  EbmlBinaryTagType,
-  EbmlAsciiTagType,
-  EbmlDateTagType,
-  EbmlDataTagType,
-  EbmlFloatTagType,
-  EbmlIntTagType,
-  EbmlBlockTagType,
-  EbmlSimpleBlockTagType,
-  EbmlMasterTagType,
-  EbmlTagExcludeField,
-  EbmlTagType,
-} from './models/tag';
+export type * from './models/tag';

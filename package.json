@@ -1,6 +1,6 @@
 {
   "name": "konoebml",
-  "version": "0.1.0-rc.5",
+  "version": "0.1.0-rc.6",
   "description": "A modern JavaScript implementation of EBML RFC8794",
   "main": "./dist/index.cjs",
   "module": "./dist/index.js",
