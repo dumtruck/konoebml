@@ -66,7 +66,7 @@ export {
   isEbmlUtf8DataTagId,
   isUnknownTagId,
 } from './models/enums';
-export {
+export type {
   EbmlUnknownTagType,
   EbmlUintTagType,
   EbmlUtf8TagType,
