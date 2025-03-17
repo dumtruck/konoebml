@@ -79,7 +79,7 @@ export function createEbmlTag(arg1: unknown, arg2: unknown): EbmlTagTrait {
     } else if (isEbmlFloatDataTagId(id)) {
       foundType = EbmlElementType.Float;
     } else if (isEbmlStringDataTagId(id)) {
-      foundType = EbmlElementType.String;
+      foundType = EbmlElementType.Ascii;
     } else if (isEbmlUtf8DataTagId(id)) {
       foundType = EbmlElementType.UTF8;
     } else if (isEbmlDateDataTagId(id)) {

@@ -6,6 +6,7 @@ import {
   EbmlTagIdEnum,
   type EbmlBlockTag,
   createEbmlTagForManuallyBuild,
+  type EbmlTagType,
 } from 'konoebml';
 import { concatArrayBuffers } from 'konoebml/tools';
 
@@ -69,7 +70,7 @@ describe('EBML Pipeline', () => {
     block.payload = payload;
     const encoder = new EbmlStreamEncoder();
     const decoder = new EbmlStreamDecoder();
-    const tags: EbmlTagTrait[] = [];
+    const tags: EbmlTagType[] = [];
     await new Promise<void>((resolve, reject) => {
       const source = new ReadableStream<EbmlTagTrait>({
         pull(controller) {
@@ -81,7 +82,7 @@ describe('EBML Pipeline', () => {
         .pipeThrough(encoder)
         .pipeThrough(decoder)
         .pipeTo(
-          new WritableStream<EbmlTagTrait>({
+          new WritableStream({
             write(tag) {
               tags.push(tag);
             },

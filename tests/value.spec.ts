@@ -5,7 +5,7 @@ import {
   EbmlTagIdEnum,
   EbmlSimpleBlockTag as SimpleBlock,
   EbmlDataTag,
-  type EbmlMasterTag,
+  type EbmlTagType,
 } from 'konoebml';
 import { Readable } from 'node:stream';
 import { WritableStream } from 'node:stream/web';
@@ -19,14 +19,14 @@ const createReadStream = (file: string) =>
 
 const makeDataStreamTest =
   (stream: () => ReadableStream<Uint8Array>) =>
-  async (cb: (tag: EbmlMasterTag | EbmlDataTag, done: () => void) => void) => {
+  async (cb: (tag: EbmlTagType, done: () => void) => void) => {
     await new Promise((resolve, reject) => {
       stream()
         .pipeThrough(new EbmlStreamDecoder())
         .pipeTo(
           new WritableStream({
             write: async (tag) => {
-              cb(tag as EbmlMasterTag | EbmlDataTag, () => resolve(true));
+              cb(tag, () => resolve(true));
             },
             close: () => {
               reject('hit end of file without calling done');
@@ -75,7 +75,7 @@ describe('EBML Values in tags', () => {
 
     it('should get a correct TrackUID value from a file (56-bit integer in hex)', () =>
       makeAVC1StreamTest((tag, done) => {
-        if (tag instanceof EbmlDataTag && tag.id === EbmlTagIdEnum.TrackUID) {
+        if (tag.id === EbmlTagIdEnum.TrackUID) {
           assert.strictEqual(tag.data, 7990710658693702);
           done();
         }

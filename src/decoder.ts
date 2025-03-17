@@ -7,6 +7,7 @@ import type {
 import { decodeEbmlContent } from './decode-utils';
 import { StreamFlushReason, UnreachableOrLogicError } from './errors';
 import { dataViewSlice } from './tools';
+import type { EbmlTagType } from './models/tag';
 
 export type EbmlStreamDecoderChunkType =
   | Uint8Array
@@ -18,10 +19,9 @@ export interface EbmlDecodeStreamTransformerOptions {
   streamStartOffset?: number;
 }
 
-export class EbmlDecodeStreamTransformer
-  implements
-    Transformer<EbmlStreamDecoderChunkType, EbmlTagTrait>,
-    FileDataViewController
+export class EbmlDecodeStreamTransformer<
+  E extends EbmlTagType | EbmlTagTrait = EbmlTagType,
+> implements Transformer<EbmlStreamDecoderChunkType, E>, FileDataViewController
 {
   private _offset = 0;
   private _buffer: Uint8Array = new Uint8Array(0);
@@ -153,19 +153,19 @@ export class EbmlDecodeStreamTransformer
   }
 
   private waitBufferRelease(
-    ctrl: TransformStreamDefaultController<EbmlTagTrait>,
+    ctrl: TransformStreamDefaultController<E>,
     isFlush: boolean
   ) {
     while (this._writeBuffer.size) {
       if (ctrl.desiredSize! <= 0 && !isFlush) {
         break;
       }
-      ctrl.enqueue(this._writeBuffer.dequeue());
+      ctrl.enqueue(this._writeBuffer.dequeue() as unknown as E);
     }
   }
 
   private async tick(
-    ctrl: TransformStreamDefaultController<EbmlTagTrait>,
+    ctrl: TransformStreamDefaultController<E>,
     isFlush: boolean
   ) {
     const waitIdle = new Promise<void>((resolve) => {
@@ -204,7 +204,7 @@ export class EbmlDecodeStreamTransformer
     this.waitBufferRelease(ctrl, isFlush);
   }
 
-  async start(ctrl: TransformStreamDefaultController<EbmlTagTrait>) {
+  async start(ctrl: TransformStreamDefaultController<E>) {
     this._offset = this.options.streamStartOffset ?? 0;
     this._buffer = new Uint8Array(0);
     this._requests.clear();
@@ -215,7 +215,7 @@ export class EbmlDecodeStreamTransformer
 
   async transform(
     chunk: EbmlStreamDecoderChunkType,
-    ctrl: TransformStreamDefaultController<EbmlTagTrait>
+    ctrl: TransformStreamDefaultController<E>
   ): Promise<void> {
     if (chunk.byteLength === 0) {
       return;
@@ -234,7 +234,7 @@ export class EbmlDecodeStreamTransformer
     await this.tick(ctrl, false);
   }
 
-  async flush(ctrl: TransformStreamDefaultController<EbmlTagTrait>) {
+  async flush(ctrl: TransformStreamDefaultController<E>) {
     await this.tick(ctrl, true);
   }
 }
@@ -242,14 +242,13 @@ export class EbmlDecodeStreamTransformer
 export interface EbmlStreamDecoderOptions
   extends EbmlDecodeStreamTransformerOptions {}
 
-export class EbmlStreamDecoder extends TransformStream<
-  EbmlStreamDecoderChunkType,
-  EbmlTagTrait
-> {
-  public readonly transformer: EbmlDecodeStreamTransformer;
+export class EbmlStreamDecoder<
+  E extends EbmlTagType | EbmlTagTrait = EbmlTagType,
+> extends TransformStream<EbmlStreamDecoderChunkType, E> {
+  public readonly transformer: EbmlDecodeStreamTransformer<E>;
 
   constructor(options: EbmlStreamDecoderOptions = {}) {
-    const transformer = new EbmlDecodeStreamTransformer(options);
+    const transformer = new EbmlDecodeStreamTransformer<E>(options);
     super(transformer);
     this.transformer = transformer;
   }

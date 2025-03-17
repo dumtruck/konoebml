@@ -9,7 +9,11 @@
                 "noNonNullAssertion": "off",
                 "noParameterAssign": "off",
                 "useFilenamingConvention": "off",
-                "noParameterProperties": "off"
+                "noParameterProperties": "off",
+                "useImportType": {
+                    "level": "error",
+                    "fix": "unsafe"
+                }
             },
             "suspicious": {
                 "noExplicitAny": "off"

@@ -3,9 +3,10 @@ import { EbmlTagTrait } from './models/tag-trait';
 import { EbmlTagPosition } from './models/enums';
 import { EbmlMasterTag } from './models/tag-master';
 import { EbmlTreeMasterNotMatchError, UnreachableOrLogicError } from './errors';
+import type { EbmlTagType } from './models/tag';
 
 export class EbmlEncodeStreamTransformer
-  implements Transformer<EbmlTagTrait, Uint8Array>
+  implements Transformer<EbmlTagTrait | EbmlTagType, Uint8Array>
 {
   stack = new Stack<[EbmlMasterTag, Uint8Array[]]>();
   _writeBuffer = new Queue<Uint8Array>();
@@ -38,7 +39,7 @@ export class EbmlEncodeStreamTransformer
 
   // biome-ignore lint/complexity/noExcessiveCognitiveComplexity: <explanation>
   async transform(
-    tag: EbmlTagTrait,
+    tag: EbmlTagTrait | EbmlTagType,
     ctrl: TransformStreamDefaultController<Uint8Array>
   ) {
     if (!(tag instanceof EbmlTagTrait)) {
@@ -81,7 +82,7 @@ export class EbmlEncodeStreamTransformer
 }
 
 export class EbmlStreamEncoder extends TransformStream<
-  EbmlTagTrait,
+  EbmlTagTrait | EbmlTagType,
   Uint8Array
 > {
   public readonly transformer: EbmlEncodeStreamTransformer;

@@ -14,7 +14,7 @@ export interface CreateEbmlTagOptions {
   contentLength: number;
   startOffset: number;
   endOffset?: number;
-  parent?: EbmlTagTrait;
+  parent?: EbmlMasterTag;
 }
 
 export type DecodeContentCollectChildPredicate =

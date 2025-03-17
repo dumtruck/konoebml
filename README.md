@@ -17,6 +17,7 @@ This package is serving as a fork with extensive rewrites and enhancements to [e
 
 - better [unknown size vint][unknown size vint] support
 - bigint support for vint, unsigned and signed int data type
+- better type system and type hints that depend on it
 - better error types
 
 # Install

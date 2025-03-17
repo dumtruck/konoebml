@@ -4,7 +4,7 @@ import {
   EbmlElementType,
   EbmlStreamDecoder as Decoder,
   EbmlDataTag,
-  type EbmlTagTrait,
+  type EbmlTagType,
 } from 'konoebml';
 
 const bufFrom = (data: Uint8Array | readonly number[]): ArrayBuffer =>
@@ -16,8 +16,8 @@ const getDecoderWithNullSink = () => {
   return decoder;
 };
 
-async function collectTags(decoder: Decoder): Promise<EbmlTagTrait[]> {
-  const tags: EbmlTagTrait[] = [];
+async function collectTags(decoder: Decoder): Promise<EbmlTagType[]> {
+  const tags: EbmlTagType[] = [];
   await decoder.readable.pipeTo(
     new WritableStream({
       write: (tag) => {

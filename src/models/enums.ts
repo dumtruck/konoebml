@@ -2,7 +2,7 @@ export enum EbmlElementType {
   Master = 'm',
   UnsignedInt = 'u',
   Integer = 'i',
-  String = 's',
+  Ascii = 's',
   UTF8 = '8',
   Binary = 'b',
   Float = 'f',
@@ -245,8 +245,6 @@ export enum EbmlTagIdEnum {
   EBML = 0x1a45dfa3,
 }
 
-export type EbmlTagIdType = EbmlTagIdEnum | number | bigint;
-
 export type EbmlMasterTagIdType =
   | EbmlTagIdEnum.ChapterDisplay
   | EbmlTagIdEnum.ContentCompression
@@ -296,185 +294,6 @@ export type EbmlMasterTagIdType =
   | EbmlTagIdEnum.SignatureElements
   | EbmlTagIdEnum.SignatureSlot
   | EbmlTagIdEnum.EBML;
-
-export type EbmlDataTagIdType =
-  | EbmlTagIdEnum.TrackType
-  | EbmlTagIdEnum.FlagDefault
-  | EbmlTagIdEnum.ChapterTrackNumber
-  | EbmlTagIdEnum.ChapterTimeStart
-  | EbmlTagIdEnum.ChapterTimeEnd
-  | EbmlTagIdEnum.CueRefTime
-  | EbmlTagIdEnum.CueRefCluster
-  | EbmlTagIdEnum.ChapterFlagHidden
-  | EbmlTagIdEnum.ContentCompAlgo
-  | EbmlTagIdEnum.DocTypeReadVersion
-  | EbmlTagIdEnum.EBMLVersion
-  | EbmlTagIdEnum.DocTypeVersion
-  | EbmlTagIdEnum.TagDefault
-  | EbmlTagIdEnum.ChapterFlagEnabled
-  | EbmlTagIdEnum.FileUsedStartTime
-  | EbmlTagIdEnum.FileUsedEndTime
-  | EbmlTagIdEnum.ContentEncodingOrder
-  | EbmlTagIdEnum.ContentEncodingScope
-  | EbmlTagIdEnum.ContentEncodingType
-  | EbmlTagIdEnum.CueBlockNumber
-  | EbmlTagIdEnum.BitDepth
-  | EbmlTagIdEnum.ChapProcessTime
-  | EbmlTagIdEnum.ChapProcessCodecID
-  | EbmlTagIdEnum.AttachmentLink
-  | EbmlTagIdEnum.TagAttachmentUID
-  | EbmlTagIdEnum.TagChapterUID
-  | EbmlTagIdEnum.TagEditionUID
-  | EbmlTagIdEnum.TagTrackUID
-  | EbmlTagIdEnum.TargetTypeValue
-  | EbmlTagIdEnum.ChapterPhysicalEquiv
-  | EbmlTagIdEnum.ChapterSegmentEditionUID
-  | EbmlTagIdEnum.ChapterUID
-  | EbmlTagIdEnum.EditionFlagOrdered
-  | EbmlTagIdEnum.EditionFlagDefault
-  | EbmlTagIdEnum.EditionFlagHidden
-  | EbmlTagIdEnum.EditionUID
-  | EbmlTagIdEnum.FileUID
-  | EbmlTagIdEnum.CueRefCodecState
-  | EbmlTagIdEnum.CueRefNumber
-  | EbmlTagIdEnum.CueCodecState
-  | EbmlTagIdEnum.CueDuration
-  | EbmlTagIdEnum.CueRelativePosition
-  | EbmlTagIdEnum.CueClusterPosition
-  | EbmlTagIdEnum.CueTrack
-  | EbmlTagIdEnum.CueTime
-  | EbmlTagIdEnum.AESSettingsCipherMode
-  | EbmlTagIdEnum.ContentSigHashAlgo
-  | EbmlTagIdEnum.ContentSigAlgo
-  | EbmlTagIdEnum.ContentEncAlgo
-  | EbmlTagIdEnum.TrickMasterTrackUID
-  | EbmlTagIdEnum.TrickTrackFlag
-  | EbmlTagIdEnum.TrickTrackUID
-  | EbmlTagIdEnum.TrackJoinUID
-  | EbmlTagIdEnum.TrackPlaneType
-  | EbmlTagIdEnum.TrackPlaneUID
-  | EbmlTagIdEnum.Channels
-  | EbmlTagIdEnum.AspectRatioType
-  | EbmlTagIdEnum.DisplayUnit
-  | EbmlTagIdEnum.DisplayHeight
-  | EbmlTagIdEnum.DisplayWidth
-  | EbmlTagIdEnum.PixelCropRight
-  | EbmlTagIdEnum.PixelCropLeft
-  | EbmlTagIdEnum.PixelCropTop
-  | EbmlTagIdEnum.PixelCropBottom
-  | EbmlTagIdEnum.PixelHeight
-  | EbmlTagIdEnum.PixelWidth
-  | EbmlTagIdEnum.OldStereoMode
-  | EbmlTagIdEnum.AlphaMode
-  | EbmlTagIdEnum.StereoMode
-  | EbmlTagIdEnum.FlagInterlaced
-  | EbmlTagIdEnum.TrackTranslateCodec
-  | EbmlTagIdEnum.TrackTranslateEditionUID
-  | EbmlTagIdEnum.SeekPreRoll
-  | EbmlTagIdEnum.CodecDelay
-  | EbmlTagIdEnum.TrackOverlay
-  | EbmlTagIdEnum.CodecDecodeAll
-  | EbmlTagIdEnum.MaxBlockAdditionID
-  | EbmlTagIdEnum.DefaultDecodedFieldDuration
-  | EbmlTagIdEnum.DefaultDuration
-  | EbmlTagIdEnum.MaxCache
-  | EbmlTagIdEnum.MinCache
-  | EbmlTagIdEnum.FlagLacing
-  | EbmlTagIdEnum.FlagForced
-  | EbmlTagIdEnum.FlagEnabled
-  | EbmlTagIdEnum.TrackUID
-  | EbmlTagIdEnum.TrackNumber
-  | EbmlTagIdEnum.ReferenceTimeCode
-  | EbmlTagIdEnum.ReferenceOffset
-  | EbmlTagIdEnum.SliceDuration
-  | EbmlTagIdEnum.Delay
-  | EbmlTagIdEnum.BlockAdditionID
-  | EbmlTagIdEnum.FrameNumber
-  | EbmlTagIdEnum.LaceNumber
-  | EbmlTagIdEnum.ReferencePriority
-  | EbmlTagIdEnum.BlockDuration
-  | EbmlTagIdEnum.BlockAddID
-  | EbmlTagIdEnum.PrevSize
-  | EbmlTagIdEnum.Position
-  | EbmlTagIdEnum.SilentTrackNumber
-  | EbmlTagIdEnum.Timecode
-  | EbmlTagIdEnum.TimecodeScaleDenominator
-  | EbmlTagIdEnum.TimecodeScale
-  | EbmlTagIdEnum.ChapterTranslateCodec
-  | EbmlTagIdEnum.ChapterTranslateEditionUID
-  | EbmlTagIdEnum.SeekPosition
-  | EbmlTagIdEnum.SignatureHash
-  | EbmlTagIdEnum.SignatureAlgo
-  | EbmlTagIdEnum.EBMLMaxSizeLength
-  | EbmlTagIdEnum.EBMLMaxIDLength
-  | EbmlTagIdEnum.EBMLReadVersion
-  | EbmlTagIdEnum.TrackOffset
-  | EbmlTagIdEnum.DiscardPadding
-  | EbmlTagIdEnum.ReferenceVirtual
-  | EbmlTagIdEnum.ReferenceBlock
-  | EbmlTagIdEnum.CodecID
-  | EbmlTagIdEnum.DocType
-  | EbmlTagIdEnum.FileMimeType
-  | EbmlTagIdEnum.TagLanguage
-  | EbmlTagIdEnum.TargetType
-  | EbmlTagIdEnum.ChapCountry
-  | EbmlTagIdEnum.ChapLanguage
-  | EbmlTagIdEnum.CodecDownloadURL
-  | EbmlTagIdEnum.CodecInfoURL
-  | EbmlTagIdEnum.Language
-  | EbmlTagIdEnum.ChapString
-  | EbmlTagIdEnum.TagString
-  | EbmlTagIdEnum.ChapterStringUID
-  | EbmlTagIdEnum.WritingApp
-  | EbmlTagIdEnum.SegmentFilename
-  | EbmlTagIdEnum.CodecName
-  | EbmlTagIdEnum.TagName
-  | EbmlTagIdEnum.FileName
-  | EbmlTagIdEnum.FileDescription
-  | EbmlTagIdEnum.CodecSettings
-  | EbmlTagIdEnum.Name
-  | EbmlTagIdEnum.MuxingApp
-  | EbmlTagIdEnum.Title
-  | EbmlTagIdEnum.NextFilename
-  | EbmlTagIdEnum.PrevFilename
-  | EbmlTagIdEnum.ContentCompSettings
-  | EbmlTagIdEnum.SegmentFamily
-  | EbmlTagIdEnum.TagBinary
-  | EbmlTagIdEnum.FileReferral
-  | EbmlTagIdEnum.SignedElement
-  | EbmlTagIdEnum.ChapProcessData
-  | EbmlTagIdEnum.ChapProcessPrivate
-  | EbmlTagIdEnum.ChapterSegmentUID
-  | EbmlTagIdEnum.FileData
-  | EbmlTagIdEnum.ContentSigKeyID
-  | EbmlTagIdEnum.ContentSignature
-  | EbmlTagIdEnum.ContentEncKeyID
-  | EbmlTagIdEnum.TrickMasterTrackSegmentUID
-  | EbmlTagIdEnum.TrickTrackSegmentUID
-  | EbmlTagIdEnum.ChannelPositions
-  | EbmlTagIdEnum.ColourSpace
-  | EbmlTagIdEnum.TrackTranslateTrackID
-  | EbmlTagIdEnum.CodecPrivate
-  | EbmlTagIdEnum.EncryptedBlock
-  | EbmlTagIdEnum.CodecState
-  | EbmlTagIdEnum.BlockAdditional
-  | EbmlTagIdEnum.BlockVirtual
-  | EbmlTagIdEnum.ChapterTranslateID
-  | EbmlTagIdEnum.NextUID
-  | EbmlTagIdEnum.PrevUID
-  | EbmlTagIdEnum.SegmentUID
-  | EbmlTagIdEnum.SeekID
-  | EbmlTagIdEnum.Signature
-  | EbmlTagIdEnum.SignaturePublicKey
-  | EbmlTagIdEnum.CRC32
-  | EbmlTagIdEnum.Void
-  | EbmlTagIdEnum.Duration
-  | EbmlTagIdEnum.OutputSamplingFrequency
-  | EbmlTagIdEnum.SamplingFrequency
-  | EbmlTagIdEnum.FrameRate
-  | EbmlTagIdEnum.GammaValue
-  | EbmlTagIdEnum.TrackTimecodeScale
-  | EbmlTagIdEnum.DateUTC;
 
 export type EbmlBlockTagIdType = EbmlTagIdEnum.Block;
 
@@ -598,7 +417,7 @@ export type EbmlIntDataTagIdType =
   | EbmlTagIdEnum.ReferenceVirtual
   | EbmlTagIdEnum.ReferenceBlock;
 
-export type EbmlStringDataTagIdType =
+export type EbmlAsciiDataTagIdType =
   | EbmlTagIdEnum.CodecID
   | EbmlTagIdEnum.DocType
   | EbmlTagIdEnum.FileMimeType
@@ -669,6 +488,24 @@ export type EbmlBinaryDataTagIdType =
   | EbmlTagIdEnum.SignaturePublicKey
   | EbmlTagIdEnum.CRC32
   | EbmlTagIdEnum.Void;
+
+export type EbmlUnknownTagIdType = number | bigint;
+
+export type EbmlDataTagIdType =
+  | EbmlBinaryDataTagIdType
+  | EbmlIntDataTagIdType
+  | EbmlUintDataTagIdType
+  | EbmlDateDataTagIdType
+  | EbmlFloatDataTagIdType
+  | EbmlAsciiDataTagIdType
+  | EbmlUtf8DataTagIdType;
+
+export type EbmlTagIdType =
+  | EbmlMasterTagIdType
+  | EbmlBlockTagIdType
+  | EbmlSimpleBlockTagIdType
+  | EbmlDataTagIdType
+  | EbmlUnknownTagIdType;
 
 export function isEbmlMasterTagId(
   tagId: EbmlTagIdType
@@ -892,7 +729,7 @@ export function isEbmlFloatDataTagId(
 
 export function isEbmlStringDataTagId(
   tagId: EbmlTagIdType
-): tagId is EbmlStringDataTagIdType {
+): tagId is EbmlAsciiDataTagIdType {
   switch (tagId) {
     case EbmlTagIdEnum.CodecID:
     case EbmlTagIdEnum.DocType:
@@ -982,10 +819,10 @@ export function isEbmlBinaryDataTagId(
   }
 }
 
-export function isUnknownDataTagId(
+export function isUnknownTagId(
   tagId: EbmlDataTagIdType
 ): tagId is Exclude<EbmlDataTagIdType, EbmlTagIdEnum> {
-  return tagId in EbmlTagIdEnum;
+  return !(tagId in EbmlTagIdEnum);
 }
 export enum EbmlBlockLacing {
   None = 1,

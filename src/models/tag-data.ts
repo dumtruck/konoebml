@@ -46,7 +46,7 @@ export class EbmlDataTag extends EbmlTagTrait {
       case EbmlElementType.Integer:
         this.data = readSigned(view);
         break;
-      case EbmlElementType.String:
+      case EbmlElementType.Ascii:
         this.data = readAscii(view);
         break;
       case EbmlElementType.UTF8:
@@ -70,7 +70,7 @@ export class EbmlDataTag extends EbmlTagTrait {
       case EbmlElementType.Integer:
         yield writeSigned(this.data as any);
         break;
-      case EbmlElementType.String:
+      case EbmlElementType.Ascii:
         yield writeAscii(this.data as any);
         break;
       case EbmlElementType.UTF8:
