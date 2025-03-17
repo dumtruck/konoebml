@@ -1,11 +1,11 @@
-import { assert, expect, describe, it } from 'vitest';
 import {
+  EbmlStreamEncoder,
+  EbmlTagIdEnum,
   EbmlTagPosition,
   type EbmlTagTrait,
-  EbmlTagIdEnum,
   createEbmlTagForManuallyBuild,
-  EbmlStreamEncoder,
 } from 'konoebml';
+import { assert, describe, expect, it } from 'vitest';
 
 const invalidTag: EbmlTagTrait = <EbmlTagTrait>(<any>{
   id: undefined,

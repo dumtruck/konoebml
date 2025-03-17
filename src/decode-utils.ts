@@ -1,17 +1,17 @@
-import { type EbmlTagIdType, isEbmlMasterTagId } from './models/enums';
-import type { DecodeContentOptions, EbmlTagTrait } from './models/tag-trait';
 import type { FileDataViewController } from './adapters';
+import { UnreachableOrLogicError } from './errors';
+import { createEbmlTag } from './factory';
+import { type EbmlTagIdType, isEbmlMasterTagId } from './models/enums';
+import { EbmlTagPosition } from './models/enums';
+import type { DecodeContentOptions, EbmlTagTrait } from './models/tag-trait';
 import {
+  type SafeSizeVint,
   checkVintSafeSize,
   dataViewSlice,
   readUnsigned,
   readVint,
   readVintLength,
-  type SafeSizeVint,
 } from './tools';
-import { EbmlTagPosition } from './models/enums';
-import { createEbmlTag } from './factory';
-import { UnreachableOrLogicError } from './errors';
 
 export async function decodeEbmlTagHeader(
   controller: FileDataViewController

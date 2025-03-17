@@ -1,17 +1,15 @@
 {
-    "extends": "./tsconfig.base.json",
-    "compilerOptions": {
-        "composite": true,
-        "rootDir": "./src",
-        "baseUrl": ".",
-        "declarationDir": "./dist",
-        "outDir": "./dist",
-        "declaration": true,
-        "declarationMap": true,
-        "emitDeclarationOnly": true
-    },
-    "include": [
-        "src"
-    ],
-    "exclude": []
+  "extends": "./tsconfig.base.json",
+  "compilerOptions": {
+    "composite": true,
+    "rootDir": "./src",
+    "baseUrl": ".",
+    "declarationDir": "./dist",
+    "outDir": "./dist",
+    "declaration": true,
+    "declarationMap": true,
+    "emitDeclarationOnly": true
+  },
+  "include": ["src"],
+  "exclude": []
 }

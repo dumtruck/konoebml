@@ -23,7 +23,8 @@ export type EbmlTagExcludeField =
   | 'position'
   | 'parent'
   | 'type'
-  | 'data';
+  | 'data'
+  | 'children';
 
 export type EbmlUintTagType = Omit<EbmlDataTag, EbmlTagExcludeField> & {
   id: EbmlUintDataTagIdType;
@@ -31,6 +32,7 @@ export type EbmlUintTagType = Omit<EbmlDataTag, EbmlTagExcludeField> & {
   parent?: EbmlMasterTag;
   type: EbmlElementType.UnsignedInt;
   data: number | bigint;
+  children?: [];
 };
 
 export type EbmlIntTagType = Omit<EbmlDataTag, EbmlTagExcludeField> & {
@@ -39,6 +41,7 @@ export type EbmlIntTagType = Omit<EbmlDataTag, EbmlTagExcludeField> & {
   parent?: EbmlMasterTag;
   type: EbmlElementType.Integer;
   data: number | bigint;
+  children?: [];
 };
 
 export type EbmlUtf8TagType = Omit<EbmlDataTag, EbmlTagExcludeField> & {
@@ -47,6 +50,7 @@ export type EbmlUtf8TagType = Omit<EbmlDataTag, EbmlTagExcludeField> & {
   parent?: EbmlMasterTag;
   type: EbmlElementType.UTF8;
   data: string;
+  children?: [];
 };
 
 export type EbmlAsciiTagType = Omit<EbmlDataTag, EbmlTagExcludeField> & {
@@ -55,6 +59,7 @@ export type EbmlAsciiTagType = Omit<EbmlDataTag, EbmlTagExcludeField> & {
   parent?: EbmlMasterTag;
   type: EbmlElementType.Ascii;
   data: string;
+  children?: [];
 };
 
 export type EbmlDateTagType = Omit<EbmlDataTag, EbmlTagExcludeField> & {
@@ -63,6 +68,7 @@ export type EbmlDateTagType = Omit<EbmlDataTag, EbmlTagExcludeField> & {
   parent?: EbmlMasterTag;
   type: EbmlElementType.Date;
   data: Uint8Array;
+  children?: [];
 };
 
 export type EbmlFloatTagType = Omit<EbmlDataTag, EbmlTagExcludeField> & {
@@ -71,6 +77,7 @@ export type EbmlFloatTagType = Omit<EbmlDataTag, EbmlTagExcludeField> & {
   parent?: EbmlMasterTag;
   type: EbmlElementType.Float;
   data: number;
+  children?: [];
 };
 
 export type EbmlBinaryTagType = Omit<EbmlDataTag, EbmlTagExcludeField> & {
@@ -79,6 +86,7 @@ export type EbmlBinaryTagType = Omit<EbmlDataTag, EbmlTagExcludeField> & {
   parent?: EbmlMasterTag;
   type: EbmlElementType.Binary;
   data: Uint8Array;
+  children?: [];
 };
 
 export type EbmlUnknownTagType = Omit<EbmlDataTag, EbmlTagExcludeField> & {
@@ -87,6 +95,7 @@ export type EbmlUnknownTagType = Omit<EbmlDataTag, EbmlTagExcludeField> & {
   parent?: EbmlMasterTag;
   type?: undefined;
   data: Uint8Array;
+  children?: [];
 };
 
 export type EbmlDataTagType =
@@ -104,6 +113,7 @@ export type EbmlBlockTagType = Omit<EbmlBlockTag, EbmlTagExcludeField> & {
   parent?: EbmlMasterTag;
   type?: undefined;
   data?: undefined;
+  children?: [];
 };
 
 export type EbmlSimpleBlockTagType = Omit<
@@ -115,6 +125,7 @@ export type EbmlSimpleBlockTagType = Omit<
   parent?: EbmlMasterTag;
   type?: undefined;
   data?: undefined;
+  children?: [];
 };
 
 export type EbmlMasterTagType = Omit<EbmlMasterTag, EbmlTagExcludeField> & {

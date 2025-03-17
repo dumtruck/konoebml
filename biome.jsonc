@@ -1,66 +1,55 @@
 {
-    "$schema": "https://biomejs.dev/schemas/1.9.4/schema.json",
-    "extends": [
-        "ultracite"
-    ],
-    "linter": {
+  "$schema": "https://biomejs.dev/schemas/1.9.4/schema.json",
+  "extends": ["ultracite"],
+  "linter": {
+    "rules": {
+      "style": {
+        "noNonNullAssertion": "off",
+        "noParameterAssign": "off",
+        "useFilenamingConvention": "off",
+        "noParameterProperties": "off",
+        "useImportType": {
+          "level": "error",
+          "fix": "unsafe"
+        }
+      },
+      "suspicious": {
+        "noExplicitAny": "off"
+      },
+      "complexity": {
+        "noForEach": "off"
+      },
+      "correctness": {
+        "noUnusedImports": {
+          "fix": "none",
+          "level": "warn"
+        }
+      },
+      "nursery": {
+        "noEnum": "off",
+        "useConsistentMemberAccessibility": "off"
+      }
+    }
+  },
+  "files": {
+    "ignore": [".vscode/*.json"]
+  },
+  "overrides": [
+    {
+      "include": ["tests/**"],
+      "javascript": {
+        "globals": ["describe", "beforeEach", "it", "expect"]
+      },
+      "linter": {
         "rules": {
-            "style": {
-                "noNonNullAssertion": "off",
-                "noParameterAssign": "off",
-                "useFilenamingConvention": "off",
-                "noParameterProperties": "off",
-                "useImportType": {
-                    "level": "error",
-                    "fix": "unsafe"
-                }
-            },
-            "suspicious": {
-                "noExplicitAny": "off"
-            },
-            "complexity": {
-                "noForEach": "off"
-            },
-            "correctness": {
-                "noUnusedImports": {
-                    "fix": "none",
-                    "level": "warn"
-                }
-            },
-            "nursery": {
-                "noEnum": "off",
-                "useConsistentMemberAccessibility": "off"
-            }
+          "performance": {
+            "useTopLevelRegex": "off"
+          },
+          "suspicious": {
+            "noMisplacedAssertion": "off"
+          }
         }
-    },
-    "files": {
-        "ignore": [
-            ".vscode/*.json"
-        ]
-    },
-    "overrides": [
-        {
-            "include": [
-                "tests/**"
-            ],
-            "javascript": {
-                "globals": [
-                    "describe",
-                    "beforeEach",
-                    "it",
-                    "expect"
-                ]
-            },
-            "linter": {
-                "rules": {
-                    "performance": {
-                        "useTopLevelRegex": "off"
-                    },
-                    "suspicious": {
-                        "noMisplacedAssertion": "off"
-                    }
-                }
-            }
-        }
-    ]
+      }
+    }
+  ]
 }

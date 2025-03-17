@@ -1,13 +1,13 @@
 import { Queue } from 'mnemonist';
 import type { FileDataViewController } from './adapters';
+import { decodeEbmlContent } from './decode-utils';
+import { StreamFlushReason, UnreachableOrLogicError } from './errors';
+import type { EbmlTagType } from './models/tag';
 import type {
   DecodeContentCollectChildPredicate,
   EbmlTagTrait,
 } from './models/tag-trait';
-import { decodeEbmlContent } from './decode-utils';
-import { StreamFlushReason, UnreachableOrLogicError } from './errors';
 import { dataViewSlice } from './tools';
-import type { EbmlTagType } from './models/tag';
 
 export type EbmlStreamDecoderChunkType =
   | Uint8Array

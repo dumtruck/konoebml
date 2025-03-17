@@ -1,14 +1,14 @@
 import fs from 'node:fs';
-import { assert, describe, it } from 'vitest';
-import {
-  EbmlStreamDecoder,
-  EbmlTagIdEnum,
-  EbmlSimpleBlockTag as SimpleBlock,
-  EbmlDataTag,
-  type EbmlTagType,
-} from 'konoebml';
 import { Readable } from 'node:stream';
 import { WritableStream } from 'node:stream/web';
+import {
+  EbmlDataTag,
+  EbmlStreamDecoder,
+  EbmlTagIdEnum,
+  type EbmlTagType,
+  EbmlSimpleBlockTag as SimpleBlock,
+} from 'konoebml';
+import { assert, describe, it } from 'vitest';
 
 process.setMaxListeners(Number.POSITIVE_INFINITY);
 

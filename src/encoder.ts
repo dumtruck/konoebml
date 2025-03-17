@@ -1,9 +1,9 @@
 import { Queue, Stack } from 'mnemonist';
-import { EbmlTagTrait } from './models/tag-trait';
-import { EbmlTagPosition } from './models/enums';
-import { EbmlMasterTag } from './models/tag-master';
 import { EbmlTreeMasterNotMatchError, UnreachableOrLogicError } from './errors';
+import { EbmlTagPosition } from './models/enums';
 import type { EbmlTagType } from './models/tag';
+import { EbmlMasterTag } from './models/tag-master';
+import { EbmlTagTrait } from './models/tag-trait';
 
 export class EbmlEncodeStreamTransformer
   implements Transformer<EbmlTagTrait | EbmlTagType, Uint8Array>

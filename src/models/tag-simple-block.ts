@@ -1,6 +1,6 @@
 import { readVint } from '../tools';
-import { type CreateEbmlBlockTagOptions, EbmlBlockTag } from './tag-block';
 import type { EbmlSimpleBlockTagIdType } from './enums';
+import { type CreateEbmlBlockTagOptions, EbmlBlockTag } from './tag-block';
 import type { DecodeContentOptions } from './tag-trait';
 
 export interface CreateEbmlSimpleBlockTagOptions

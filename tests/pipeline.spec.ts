@@ -1,14 +1,14 @@
-import { assert, describe, it, expect } from 'vitest';
 import {
+  type EbmlBlockTag,
   EbmlStreamDecoder,
   EbmlStreamEncoder,
-  type EbmlTagTrait,
   EbmlTagIdEnum,
-  type EbmlBlockTag,
-  createEbmlTagForManuallyBuild,
+  type EbmlTagTrait,
   type EbmlTagType,
+  createEbmlTagForManuallyBuild,
 } from 'konoebml';
 import { concatArrayBuffers } from 'konoebml/tools';
+import { assert, describe, expect, it } from 'vitest';
 
 describe('EBML Pipeline', () => {
   async function assertPipelineOutputEquals(

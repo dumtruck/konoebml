@@ -1,6 +1,6 @@
 {
   "name": "konoebml",
-  "version": "0.1.0-rc.4",
+  "version": "0.1.0-rc.5",
   "description": "A modern JavaScript implementation of EBML RFC8794",
   "main": "./dist/index.cjs",
   "module": "./dist/index.js",
@@ -20,8 +20,8 @@
     "test": "vitest --coverage",
     "test-ci": "vitest --watch=false --coverage",
     "prepublishOnly": "npm run build",
-    "lint": "ultracite lint",
-    "format": "ultracite format",
+    "lint": "biome lint",
+    "lint-fix": "biome lint --fix",
     "playground": "tsx --tsconfig=./tsconfig.example.json ./examples/playground.ts"
   },
   "repository": "github:dumtruck/konoebml",

@@ -1,11 +1,11 @@
-import { assert, describe, it } from 'vitest';
 import {
-  EbmlTagPosition,
-  EbmlElementType,
   EbmlStreamDecoder as Decoder,
   EbmlDataTag,
+  EbmlElementType,
+  EbmlTagPosition,
   type EbmlTagType,
 } from 'konoebml';
+import { assert, describe, it } from 'vitest';
 
 const bufFrom = (data: Uint8Array | readonly number[]): ArrayBuffer =>
   new Uint8Array(data).buffer;

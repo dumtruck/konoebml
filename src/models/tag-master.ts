@@ -1,12 +1,12 @@
+import { createEbmlTag } from 'src/factory';
+import { decodeEbmlTagHeader } from '../decode-utils';
+import { EbmlElementType, EbmlTagPosition, isEbmlMasterTagId } from './enums';
+import type { EbmlMasterTagIdType } from './enums';
 import {
   type CreateEbmlTagOptions,
   type DecodeContentOptions,
   EbmlTagTrait,
 } from './tag-trait';
-import { EbmlElementType, EbmlTagPosition, isEbmlMasterTagId } from './enums';
-import { decodeEbmlTagHeader } from '../decode-utils';
-import { createEbmlTag } from 'src/factory';
-import type { EbmlMasterTagIdType } from './enums';
 
 export interface CreateEbmlMasterTagOptions
   extends Omit<CreateEbmlTagOptions, 'position' | 'type' | 'id'> {

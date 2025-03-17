@@ -1,4 +1,3 @@
-import { assert, describe, it } from 'vitest';
 import {
   readAscii,
   readElementIdVint,
@@ -9,6 +8,7 @@ import {
   readVint,
   writeVint,
 } from 'konoebml/tools';
+import { assert, describe, it } from 'vitest';
 
 function bufFrom(data: Uint8Array | readonly number[]): Uint8Array {
   return new Uint8Array(data);

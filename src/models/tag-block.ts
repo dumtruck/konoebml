@@ -1,5 +1,3 @@
-import { type CreateEbmlDataTagOptions, EbmlDataTag } from './tag-data';
-import { EbmlBlockLacing } from './enums';
 import {
   dataViewSlice,
   dataViewSliceToBuf,
@@ -8,12 +6,14 @@ import {
   writeSigned,
   writeVint,
 } from '../tools';
+import { EbmlBlockLacing } from './enums';
 import {
   type EbmlBlockTagIdType,
   type EbmlSimpleBlockTagIdType,
   EbmlTagIdEnum,
 } from './enums';
 import { EbmlElementType } from './enums';
+import { type CreateEbmlDataTagOptions, EbmlDataTag } from './tag-data';
 import type { DecodeContentOptions } from './tag-trait';
 
 export interface CreateEbmlBlockTagOptions

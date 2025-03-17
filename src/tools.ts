@@ -1,13 +1,13 @@
 import {
-  VintOutOfRangeError,
-  VintLengthOutOfRangeError,
   ElementIdVintDataAllOnesError,
   ElementIdVintDataAllZerosError,
   ElementIdVintDataNotShortestError,
-  UnsupportLengthForElementTypeError,
   OutOfRangeForElementTypeError,
   SizeUnitOutOfSafeIntegerRangeError,
   UnreachableOrLogicError,
+  UnsupportLengthForElementTypeError,
+  VintLengthOutOfRangeError,
+  VintOutOfRangeError,
 } from './errors';
 import {
   EbmlElementType,

@@ -1,10 +1,4 @@
 import {
-  type CreateEbmlTagOptions,
-  type DecodeContentOptions,
-  EbmlTagTrait,
-} from './tag-trait';
-import { EbmlElementType } from './enums';
-import {
   dataViewSliceToBuf,
   readAscii,
   readFloat,
@@ -17,7 +11,13 @@ import {
   writeUnsigned,
   writeUtf8,
 } from '../tools';
+import { EbmlElementType } from './enums';
 import { EbmlTagPosition } from './enums';
+import {
+  type CreateEbmlTagOptions,
+  type DecodeContentOptions,
+  EbmlTagTrait,
+} from './tag-trait';
 
 export type CreateEbmlDataTagOptions = Omit<CreateEbmlTagOptions, 'position'>;
 

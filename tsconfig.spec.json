@@ -3,24 +3,15 @@
   "compilerOptions": {
     "composite": true,
     "rootDir": ".",
-    "types": [
-      "vitest/globals",
-      "node"
-    ],
+    "types": ["vitest/globals", "node"],
     "noEmit": true,
     "paths": {
-      "konoebml": [
-        "./src/index.ts"
-      ],
-      "konoebml/*": [
-        "./src/*"
-      ]
+      "konoebml": ["./src/index.ts"],
+      "konoebml/*": ["./src/*"]
     }
   },
   "files": [],
-  "include": [
-    "tests/*"
-  ],
+  "include": ["tests/*"],
   "references": [
     {
       "path": "./tsconfig.lib.json"

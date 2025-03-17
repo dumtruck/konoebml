@@ -1,9 +1,9 @@
+import type { FileDataViewController } from '../adapters';
+import { InconsistentOffsetOnDecodingContentError } from '../errors';
+import { UNKNOWN_SIZE_VINT_BUF, hexStringToBuf, writeVint } from '../tools';
 import { EbmlTagPosition } from './enums';
 import { EbmlTagIdEnum, type EbmlTagIdType } from './enums';
 import type { EbmlElementType } from './enums';
-import { hexStringToBuf, UNKNOWN_SIZE_VINT_BUF, writeVint } from '../tools';
-import type { FileDataViewController } from '../adapters';
-import { InconsistentOffsetOnDecodingContentError } from '../errors';
 import type { EbmlMasterTag } from './tag-master';
 
 export interface CreateEbmlTagOptions {
