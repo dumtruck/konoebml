@@ -1,9 +1,12 @@
-import { type CreateEbmlTagOptions, EbmlTagTrait } from './tag-trait';
+import {
+  type CreateEbmlTagOptions,
+  type DecodeContentOptions,
+  EbmlTagTrait,
+} from './tag-trait';
 import { EbmlElementType, EbmlTagPosition, isEbmlMasterTagId } from './enums';
 import { decodeEbmlTagHeader } from '../decode-utils';
 import { createEbmlTag } from 'src/factory';
 import type { EbmlMasterTagIdType } from './enums';
-import type { FileDataViewController } from '../adapters';
 
 export interface CreateEbmlMasterTagOptions
   extends Omit<CreateEbmlTagOptions, 'position' | 'type' | 'id'> {
@@ -35,7 +38,9 @@ export class EbmlMasterTag extends EbmlTagTrait {
     }
   }
 
-  async *decodeContentImpl(controller: FileDataViewController) {
+  async *decodeContentImpl(options: DecodeContentOptions) {
+    const controller = options.dataViewController;
+    const collectChild = options.collectChild;
     while (true) {
       const offset = controller.getOffset();
 
@@ -79,13 +84,22 @@ export class EbmlMasterTag extends EbmlTagTrait {
         parent: this,
       });
 
-      for await (const item of tag.decodeContent(controller)) {
+      for await (const item of tag.decodeContent(options)) {
         yield item;
       }
 
       tag.endOffset = controller.getOffset();
 
-      this._children.push(tag);
+      let shouldCollectChild: boolean;
+      if (typeof collectChild === 'function') {
+        shouldCollectChild = !!collectChild(tag, this);
+      } else {
+        shouldCollectChild = !!collectChild;
+      }
+
+      if (shouldCollectChild) {
+        this._children.push(tag);
+      }
 
       yield tag;
     }

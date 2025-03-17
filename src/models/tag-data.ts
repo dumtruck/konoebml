@@ -1,7 +1,10 @@
-import { type CreateEbmlTagOptions, EbmlTagTrait } from './tag-trait';
+import {
+  type CreateEbmlTagOptions,
+  type DecodeContentOptions,
+  EbmlTagTrait,
+} from './tag-trait';
 import { EbmlElementType } from './enums';
 import {
-  dataViewSlice,
   dataViewSliceToBuf,
   readAscii,
   readFloat,
@@ -15,7 +18,6 @@ import {
   writeUtf8,
 } from '../tools';
 import { EbmlTagPosition } from './enums';
-import type { FileDataViewController } from 'src/adapters';
 
 export type CreateEbmlDataTagOptions = Omit<CreateEbmlTagOptions, 'position'>;
 
@@ -30,7 +32,8 @@ export class EbmlDataTag extends EbmlTagTrait {
   }
 
   // biome-ignore lint/correctness/useYield: <explanation>
-  override async *decodeContentImpl(controller: FileDataViewController) {
+  override async *decodeContentImpl(options: DecodeContentOptions) {
+    const controller = options.dataViewController;
     const offset = controller.getOffset();
     const view = await controller.read(offset, this.contentLength, true);
     switch (this.type) {

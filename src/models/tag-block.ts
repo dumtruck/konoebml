@@ -14,7 +14,7 @@ import {
   EbmlTagIdEnum,
 } from './enums';
 import { EbmlElementType } from './enums';
-import type { FileDataViewController } from '../adapters';
+import type { DecodeContentOptions } from './tag-trait';
 
 export interface CreateEbmlBlockTagOptions
   extends Omit<CreateEbmlDataTagOptions, 'id' | 'type'> {
@@ -77,7 +77,8 @@ export class EbmlBlockTag extends EbmlDataTag {
   }
 
   // biome-ignore lint/correctness/useYield: <explanation>
-  async *decodeContentImpl(controller: FileDataViewController) {
+  async *decodeContentImpl(options: DecodeContentOptions) {
+    const controller = options.dataViewController;
     const offset = controller.getOffset();
     const view = await controller.read(offset, this.contentLength, true);
     const track = readVint(view)!;

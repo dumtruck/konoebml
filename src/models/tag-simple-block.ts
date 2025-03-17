@@ -1,7 +1,7 @@
 import { readVint } from '../tools';
 import { type CreateEbmlBlockTagOptions, EbmlBlockTag } from './tag-block';
 import type { EbmlSimpleBlockTagIdType } from './enums';
-import type { FileDataViewController } from '../adapters';
+import type { DecodeContentOptions } from './tag-trait';
 
 export interface CreateEbmlSimpleBlockTagOptions
   extends Omit<CreateEbmlBlockTagOptions, 'id'> {
@@ -33,12 +33,13 @@ export class EbmlSimpleBlockTag extends EbmlBlockTag {
     yield this.payload;
   }
 
-  async *decodeContentImpl(controller: FileDataViewController) {
+  async *decodeContentImpl(options: DecodeContentOptions) {
+    const controller = options.dataViewController;
     const offset = controller.getOffset();
 
     const view = await controller.read(offset, this.contentLength, true);
 
-    for await (const item of super.decodeContentImpl(controller)) {
+    for await (const item of super.decodeContentImpl(options)) {
       yield item;
     }
 

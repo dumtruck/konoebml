@@ -4,6 +4,7 @@ import type { EbmlElementType } from './enums';
 import { hexStringToBuf, UNKNOWN_SIZE_VINT_BUF, writeVint } from '../tools';
 import type { FileDataViewController } from '../adapters';
 import { InconsistentOffsetOnDecodingContentError } from '../errors';
+import type { EbmlMasterTag } from './tag-master';
 
 export interface CreateEbmlTagOptions {
   id: EbmlTagIdType;
@@ -14,6 +15,15 @@ export interface CreateEbmlTagOptions {
   startOffset: number;
   endOffset?: number;
   parent?: EbmlTagTrait;
+}
+
+export type DecodeContentCollectChildPredicate =
+  | boolean
+  | ((child: EbmlTagTrait, parent: EbmlMasterTag) => boolean);
+
+export interface DecodeContentOptions {
+  collectChild?: DecodeContentCollectChildPredicate;
+  dataViewController: FileDataViewController;
 }
 
 export abstract class EbmlTagTrait {
@@ -117,7 +127,7 @@ export abstract class EbmlTagTrait {
    * @param controller DataView controller, simulate async filesystem file
    */
   protected abstract decodeContentImpl(
-    controller: FileDataViewController
+    options: DecodeContentOptions
   ): AsyncGenerator<EbmlTagTrait, void, unknown>;
 
   /**
@@ -126,13 +136,14 @@ export abstract class EbmlTagTrait {
    * @returns Deep traversal async iterators of all descendants
    */
   public async *decodeContent(
-    controller: FileDataViewController
+    options: DecodeContentOptions
   ): AsyncGenerator<EbmlTagTrait, void, unknown> {
+    const controller = options.dataViewController;
     if (this.contentLength === 0 || this.position === EbmlTagPosition.Start) {
       return;
     }
     const startOffset = controller.getOffset();
-    for await (const tag of this.decodeContentImpl(controller)) {
+    for await (const tag of this.decodeContentImpl(options)) {
       yield tag;
     }
     const endOffset = controller.getOffset();

@@ -1,6 +1,9 @@
 import { Queue } from 'mnemonist';
 import type { FileDataViewController } from './adapters';
-import type { EbmlTagTrait } from './models/tag-trait';
+import type {
+  DecodeContentCollectChildPredicate,
+  EbmlTagTrait,
+} from './models/tag-trait';
 import { decodeEbmlContent } from './decode-utils';
 import { StreamFlushReason, UnreachableOrLogicError } from './errors';
 import { dataViewSlice } from './tools';
@@ -9,6 +12,11 @@ export type EbmlStreamDecoderChunkType =
   | Uint8Array
   | ArrayBuffer
   | ArrayBufferLike;
+
+export interface EbmlDecodeStreamTransformerOptions {
+  collectChild?: DecodeContentCollectChildPredicate;
+  streamStartOffset?: number;
+}
 
 export class EbmlDecodeStreamTransformer
   implements
@@ -23,6 +31,11 @@ export class EbmlDecodeStreamTransformer
   private _tickIdleCallback: VoidFunction | undefined;
   private _currentTask: Promise<void> | undefined;
   private _writeBuffer = new Queue<EbmlTagTrait>();
+  public readonly options: EbmlDecodeStreamTransformerOptions;
+
+  constructor(options: EbmlDecodeStreamTransformerOptions = {}) {
+    this.options = options;
+  }
 
   public getBuffer(): Uint8Array {
     return this._buffer;
@@ -171,7 +184,10 @@ export class EbmlDecodeStreamTransformer
     if (!this._currentTask && !isFlush) {
       const decode = async () => {
         try {
-          for await (const tag of decodeEbmlContent(this)) {
+          for await (const tag of decodeEbmlContent({
+            collectChild: this.options.collectChild,
+            dataViewController: this,
+          })) {
             this.tryEnqueueToBuffer(tag);
           }
           this._currentTask = undefined;
@@ -189,7 +205,7 @@ export class EbmlDecodeStreamTransformer
   }
 
   async start(ctrl: TransformStreamDefaultController<EbmlTagTrait>) {
-    this._offset = 0;
+    this._offset = this.options.streamStartOffset ?? 0;
     this._buffer = new Uint8Array(0);
     this._requests.clear();
     this._tickIdleCallback = undefined;
@@ -223,14 +239,17 @@ export class EbmlDecodeStreamTransformer
   }
 }
 
+export interface EbmlStreamDecoderOptions
+  extends EbmlDecodeStreamTransformerOptions {}
+
 export class EbmlStreamDecoder extends TransformStream<
   EbmlStreamDecoderChunkType,
   EbmlTagTrait
 > {
   public readonly transformer: EbmlDecodeStreamTransformer;
 
-  constructor() {
-    const transformer = new EbmlDecodeStreamTransformer();
+  constructor(options: EbmlStreamDecoderOptions = {}) {
+    const transformer = new EbmlDecodeStreamTransformer(options);
     super(transformer);
     this.transformer = transformer;
   }

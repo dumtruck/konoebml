@@ -1,5 +1,5 @@
 import { type EbmlTagIdType, isEbmlMasterTagId } from './models/enums';
-import type { EbmlTagTrait } from './models/tag-trait';
+import type { DecodeContentOptions, EbmlTagTrait } from './models/tag-trait';
 import type { FileDataViewController } from './adapters';
 import {
   checkVintSafeSize,
@@ -71,8 +71,9 @@ export async function decodeEbmlTagHeader(
 }
 
 export async function* decodeEbmlContent(
-  controller: FileDataViewController
+  options: DecodeContentOptions
 ): AsyncGenerator<EbmlTagTrait, void, unknown> {
+  const controller = options.dataViewController;
   while (true) {
     const offset = controller.getOffset();
 
@@ -112,7 +113,7 @@ export async function* decodeEbmlContent(
       parent: undefined,
     });
 
-    for await (const item of tag.decodeContent(controller)) {
+    for await (const item of tag.decodeContent(options)) {
       yield item;
     }
 

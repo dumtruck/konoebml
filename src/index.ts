@@ -1,8 +1,22 @@
-export { EbmlBlockTag } from './models/tag-block';
-export { EbmlDataTag } from './models/tag-data';
-export { EbmlMasterTag } from './models/tag-master';
-export { EbmlSimpleBlockTag } from './models/tag-simple-block';
-export { EbmlTagTrait } from './models/tag-trait';
+export {
+  EbmlBlockTag,
+  type CreateEbmlBlockTagOptions,
+} from './models/tag-block';
+export { EbmlDataTag, type CreateEbmlDataTagOptions } from './models/tag-data';
+export {
+  EbmlMasterTag,
+  type CreateEbmlMasterTagOptions,
+} from './models/tag-master';
+export {
+  EbmlSimpleBlockTag,
+  type CreateEbmlSimpleBlockTagOptions,
+} from './models/tag-simple-block';
+export {
+  EbmlTagTrait,
+  type DecodeContentCollectChildPredicate,
+  type DecodeContentOptions,
+  type CreateEbmlTagOptions,
+} from './models/tag-trait';
 export {
   createEbmlTag,
   createEbmlTagForManuallyBuild,
@@ -15,6 +29,8 @@ export {
   EbmlStreamDecoder,
   EbmlDecodeStreamTransformer,
   type EbmlStreamDecoderChunkType,
+  type EbmlStreamDecoderOptions,
+  type EbmlDecodeStreamTransformerOptions,
 } from './decoder';
 export {
   EbmlStreamEncoder,
