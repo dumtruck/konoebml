@@ -1,40 +1,79 @@
-import { Queue, Stack } from 'mnemonist';
+import { Stack } from 'mnemonist';
 import { EbmlTreeMasterNotMatchError, UnreachableOrLogicError } from './errors';
 import { EbmlTagPosition } from './models/enums';
 import type { EbmlTagType } from './models/tag';
 import { EbmlMasterTag } from './models/tag-master';
 import { EbmlTagTrait } from './models/tag-trait';
 
+export interface EbmlEncodeStreamTransformerBackpressure {
+  /**
+   * @default true
+   */
+  enabled?: boolean;
+  /**
+   * @default () => Promise.resolve()
+   */
+  eventLoop?: () => Promise<void>;
+  /**
+   * @default 'byte-length'
+   */
+  queuingStrategy?: 'byte-length' | 'count';
+}
+
+export interface EbmlEncodeStreamTransformerOptions {
+  backpressure?: EbmlEncodeStreamTransformerBackpressure;
+}
+
 export class EbmlEncodeStreamTransformer
   implements Transformer<EbmlTagTrait | EbmlTagType, Uint8Array>
 {
   stack = new Stack<[EbmlMasterTag, Uint8Array[]]>();
-  _writeBuffer = new Queue<Uint8Array>();
-  _writeBufferTask: Promise<void> | undefined;
   closed = false;
+  private _initWatermark = 0;
+  public backpressure: Required<EbmlEncodeStreamTransformerBackpressure>;
+  public readonly options: EbmlEncodeStreamTransformerOptions;
 
-  tryEnqueueToBuffer(...frag: Uint8Array[]) {
+  constructor(options: EbmlEncodeStreamTransformerOptions = {}) {
+    this.options = options;
+    this.backpressure = Object.assign(
+      {
+        enabled: true,
+        eventLoop: () => Promise.resolve(),
+        queuingStrategy: 'byte-length',
+      },
+      options.backpressure ?? {}
+    );
+  }
+
+  async tryEnqueueToController(
+    ctrl: TransformStreamDefaultController<Uint8Array>,
+    ...frag: Uint8Array[]
+  ) {
     const top = this.stack.peek();
     if (top) {
       top[1].push(...frag);
+    } else if (this.backpressure.enabled) {
+      const eventLoop = this.backpressure.eventLoop;
+      let i = 0;
+      while (i < frag.length) {
+        if (ctrl.desiredSize! < this._initWatermark) {
+          await eventLoop();
+        } else {
+          ctrl.enqueue(frag[i]);
+          i++;
+        }
+      }
     } else {
-      for (const f of frag) {
-        this._writeBuffer.enqueue(f);
+      let i = 0;
+      while (i < frag.length) {
+        ctrl.enqueue(frag[i]);
+        i++;
       }
     }
   }
 
-  waitBufferRelease(
-    ctrl: TransformStreamDefaultController<Uint8Array>,
-    isFlush: boolean
-  ) {
-    while (this._writeBuffer.size) {
-      if (ctrl.desiredSize! <= 0 && !isFlush) {
-        break;
-      }
-      const pop = this._writeBuffer.dequeue();
-      ctrl.enqueue(pop);
-    }
+  start(ctrl: TransformStreamDefaultController<Uint8Array>) {
+    this._initWatermark = ctrl.desiredSize ?? 0;
   }
 
   // biome-ignore lint/complexity/noExcessiveCognitiveComplexity: <explanation>
@@ -49,7 +88,7 @@ export class EbmlEncodeStreamTransformer
     if (tag instanceof EbmlMasterTag) {
       if (tag.contentLength === Number.POSITIVE_INFINITY) {
         if (tag.position === EbmlTagPosition.Start) {
-          this.tryEnqueueToBuffer(...tag.encodeHeader());
+          await this.tryEnqueueToController(ctrl, ...tag.encodeHeader());
         }
       } else {
         // biome-ignore lint/style/useCollapsedElseIf: <explanation>
@@ -66,20 +105,18 @@ export class EbmlEncodeStreamTransformer
             0
           );
           startTag.contentLength = size;
-          this.tryEnqueueToBuffer(...startTag.encodeHeader());
-          this.tryEnqueueToBuffer(...fragments);
+          await this.tryEnqueueToController(ctrl, ...startTag.encodeHeader());
+          await this.tryEnqueueToController(ctrl, ...fragments);
         }
       }
     } else {
-      this.tryEnqueueToBuffer(...tag.encode());
+      await this.tryEnqueueToController(ctrl, ...tag.encode());
     }
-    this.waitBufferRelease(ctrl, false);
-  }
-
-  flush(ctrl: TransformStreamDefaultController<Uint8Array>) {
-    this.waitBufferRelease(ctrl, true);
   }
 }
+
+export interface EbmlStreamEncoderOptions
+  extends EbmlEncodeStreamTransformerOptions {}
 
 export class EbmlStreamEncoder extends TransformStream<
   EbmlTagTrait | EbmlTagType,
@@ -87,9 +124,16 @@ export class EbmlStreamEncoder extends TransformStream<
 > {
   public readonly transformer: EbmlEncodeStreamTransformer;
 
-  constructor() {
-    const transformer = new EbmlEncodeStreamTransformer();
-    super(transformer);
+  constructor(options: EbmlStreamEncoderOptions = {}) {
+    const transformer = new EbmlEncodeStreamTransformer(options);
+    const queuingStrategy = transformer.backpressure.queuingStrategy;
+    const inputQueuingStrategySize =
+      queuingStrategy === 'count'
+        ? (a: EbmlTagTrait | EbmlTagType) =>
+            a?.countQueuingSize >= 0 ? a.countQueuingSize : 1
+        : (a: EbmlTagTrait | EbmlTagType) =>
+            a?.byteLengthQueuingSize >= 0 ? a.byteLengthQueuingSize : 1;
+    super(transformer, { size: inputQueuingStrategySize });
     this.transformer = transformer;
   }
 }

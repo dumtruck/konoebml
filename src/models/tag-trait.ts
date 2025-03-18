@@ -76,6 +76,11 @@ export abstract class EbmlTagTrait {
     this._endOffset = options.endOffset;
   }
 
+  public abstract get byteLengthQueuingSize(): number;
+  public get countQueuingSize(): number {
+    return 1;
+  }
+
   public set contentLength(value: number) {
     this._contentLength = value;
   }

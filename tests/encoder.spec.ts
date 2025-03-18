@@ -56,7 +56,9 @@ const makeEncoderTest = async (tags: EbmlTagTrait[]) => {
       controller.close();
     },
   });
+
   const encoder = new EbmlStreamEncoder();
+
   const chunks: ArrayBuffer[] = [];
 
   await new Promise<void>((resolve, reject) => {
@@ -69,6 +71,9 @@ const makeEncoderTest = async (tags: EbmlTagTrait[]) => {
           },
           close() {
             resolve();
+          },
+          abort: (e) => {
+            reject(e);
           },
         })
       )
@@ -106,16 +111,15 @@ describe('EBML Encoder', () => {
     ]);
   });
 
-  describe('#writeTag', () => {
-    it('throws with an incomplete tag data', async () => {
-      await expect(() => makeEncoderTest([incompleteTag])).rejects.toThrow(
-        /should only accept embl tag but not/
-      );
-    });
-    it('throws with an invalid tag id', async () => {
-      await expect(() => makeEncoderTest([invalidTag])).rejects.toThrow(
-        /should only accept embl tag but not/
-      );
-    });
+  it('throws with an incomplete tag data', async () => {
+    await expect(() => makeEncoderTest([incompleteTag])).rejects.toThrow(
+      /should only accept embl tag but not/
+    );
+  });
+
+  it('throws with an invalid tag id', async () => {
+    await expect(() => makeEncoderTest([invalidTag])).rejects.toThrow(
+      /should only accept embl tag but not/
+    );
   });
 });

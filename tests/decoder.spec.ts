@@ -28,7 +28,7 @@ async function collectTags(decoder: Decoder): Promise<EbmlTagType[]> {
   return tags;
 }
 
-describe('EbmlStreamDecoder', () => {
+describe('Ebml Decoder', () => {
   it('should wait for more data if a tag is longer than the buffer', async () => {
     const decoder = getDecoderWithNullSink();
     const writer = decoder.writable.getWriter();

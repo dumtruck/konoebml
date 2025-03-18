@@ -14,9 +14,25 @@ export type EbmlStreamDecoderChunkType =
   | ArrayBuffer
   | ArrayBufferLike;
 
+export interface EbmlDecodeStreamTransformerBackpressure {
+  /**
+   * @default true
+   */
+  enabled?: boolean;
+  /**
+   * @default () => Promise.resolve()
+   */
+  eventLoop?: () => Promise<void>;
+  /**
+   * @default 'byte-length'
+   */
+  queuingStrategy?: 'byte-length' | 'count';
+}
+
 export interface EbmlDecodeStreamTransformerOptions {
   collectChild?: DecodeContentCollectChildPredicate;
   streamStartOffset?: number;
+  backpressure?: EbmlDecodeStreamTransformerBackpressure;
 }
 
 export class EbmlDecodeStreamTransformer<
@@ -30,11 +46,20 @@ export class EbmlDecodeStreamTransformer<
   > = new Queue();
   private _tickIdleCallback: VoidFunction | undefined;
   private _currentTask: Promise<void> | undefined;
-  private _writeBuffer = new Queue<EbmlTagTrait>();
+  private _initWatermark = 0;
+  public backpressure: Required<EbmlDecodeStreamTransformerBackpressure>;
   public readonly options: EbmlDecodeStreamTransformerOptions;
 
   constructor(options: EbmlDecodeStreamTransformerOptions = {}) {
     this.options = options;
+    this.backpressure = Object.assign(
+      {
+        enabled: true,
+        eventLoop: () => Promise.resolve(),
+        queuingStrategy: 'byte-length',
+      },
+      options.backpressure ?? {}
+    );
   }
 
   public getBuffer(): Uint8Array {
@@ -148,19 +173,22 @@ export class EbmlDecodeStreamTransformer<
     }
   }
 
-  private tryEnqueueToBuffer(item: EbmlTagTrait) {
-    this._writeBuffer.enqueue(item);
-  }
-
-  private waitBufferRelease(
+  private async tryEnqueueToController(
     ctrl: TransformStreamDefaultController<E>,
-    isFlush: boolean
+    item: EbmlTagTrait
   ) {
-    while (this._writeBuffer.size) {
-      if (ctrl.desiredSize! <= 0 && !isFlush) {
-        break;
+    if (this.backpressure.enabled) {
+      const eventLoop = this.backpressure.eventLoop;
+      while (true) {
+        if (ctrl.desiredSize! < this._initWatermark) {
+          await eventLoop();
+        } else {
+          ctrl.enqueue(item as unknown as E);
+          break;
+        }
       }
-      ctrl.enqueue(this._writeBuffer.dequeue() as unknown as E);
+    } else {
+      ctrl.enqueue(item as unknown as E);
     }
   }
 
@@ -188,7 +216,7 @@ export class EbmlDecodeStreamTransformer<
             collectChild: this.options.collectChild,
             dataViewController: this,
           })) {
-            this.tryEnqueueToBuffer(tag);
+            await this.tryEnqueueToController(ctrl, tag);
           }
           this._currentTask = undefined;
         } catch (err) {
@@ -201,7 +229,6 @@ export class EbmlDecodeStreamTransformer<
     }
 
     await Promise.race([this._currentTask, waitIdle]);
-    this.waitBufferRelease(ctrl, isFlush);
   }
 
   async start(ctrl: TransformStreamDefaultController<E>) {
@@ -210,6 +237,7 @@ export class EbmlDecodeStreamTransformer<
     this._requests.clear();
     this._tickIdleCallback = undefined;
     this._currentTask = undefined;
+    this._initWatermark = ctrl.desiredSize ?? 0;
     await this.tick(ctrl, false);
   }
 
@@ -249,7 +277,18 @@ export class EbmlStreamDecoder<
 
   constructor(options: EbmlStreamDecoderOptions = {}) {
     const transformer = new EbmlDecodeStreamTransformer<E>(options);
-    super(transformer);
+    const queuingStrategy = transformer.backpressure.queuingStrategy;
+    const outputQueuingStrategySize =
+      queuingStrategy === 'count'
+        ? (a: E) => {
+            const s = a?.countQueuingSize;
+            return s >= 0 ? s : 1;
+          }
+        : (a: E) => {
+            const s = a?.byteLengthQueuingSize;
+            return s >= 0 ? s : 1;
+          };
+    super(transformer, undefined, { size: outputQueuingStrategySize });
     this.transformer = transformer;
   }
 }

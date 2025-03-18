@@ -31,6 +31,10 @@ export class EbmlDataTag extends EbmlTagTrait {
     });
   }
 
+  override get byteLengthQueuingSize(): number {
+    return this.totalLength;
+  }
+
   // biome-ignore lint/correctness/useYield: <explanation>
   override async *decodeContentImpl(options: DecodeContentOptions) {
     const controller = options.dataViewController;

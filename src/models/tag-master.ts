@@ -16,20 +16,27 @@ export interface CreateEbmlMasterTagOptions
 export class EbmlMasterTag extends EbmlTagTrait {
   private _children: EbmlTagTrait[] = [];
 
-  get children(): EbmlTagTrait[] {
-    return this._children;
-  }
-
-  set children(value: EbmlTagTrait[]) {
-    this._children = value;
-  }
-
   constructor(options: CreateEbmlMasterTagOptions) {
     super({
       ...options,
       id: options.id,
       type: EbmlElementType.Master,
     });
+  }
+
+  override get byteLengthQueuingSize(): number {
+    if (this.position === EbmlTagPosition.Start) {
+      return this.headerLength;
+    }
+    return 0;
+  }
+
+  get children(): EbmlTagTrait[] {
+    return this._children;
+  }
+
+  set children(value: EbmlTagTrait[]) {
+    this._children = value;
   }
 
   *encodeContent(): Generator<Uint8Array, void, unknown> {
