@@ -31,9 +31,9 @@ export class EbmlBlockTag extends EbmlDataTag {
 
   constructor(options: CreateEbmlBlockTagOptions) {
     super({
-      ...options,
       id: options.id ?? EbmlTagIdEnum.Block,
       type: EbmlElementType.Binary,
+      ...options,
     });
   }
 

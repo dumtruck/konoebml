@@ -1,5 +1,5 @@
 import { readVint } from '../tools';
-import type { EbmlSimpleBlockTagIdType } from './enums';
+import { EbmlTagIdEnum, type EbmlSimpleBlockTagIdType } from './enums';
 import { type CreateEbmlBlockTagOptions, EbmlBlockTag } from './tag-block';
 import type { DecodeContentOptions } from './tag-trait';
 
@@ -12,9 +12,11 @@ export class EbmlSimpleBlockTag extends EbmlBlockTag {
   discardable: boolean | undefined;
   keyframe: boolean | undefined;
 
-  // biome-ignore lint/complexity/noUselessConstructor: <explanation>
   constructor(options: CreateEbmlSimpleBlockTagOptions) {
-    super(options);
+    super({
+      id: EbmlTagIdEnum.SimpleBlock,
+      ...options,
+    });
   }
 
   *encodeContent(): Generator<Uint8Array, void, unknown> {
