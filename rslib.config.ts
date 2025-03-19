@@ -24,10 +24,10 @@ export default defineConfig({
       format: 'cjs',
       syntax: 'es2021',
       dts: false,
-      bundle: true,
+      bundle: false,
       source: {
         entry: {
-          index: './src/index.ts',
+          index: ['src/**/*.ts'],
         },
       },
     },
