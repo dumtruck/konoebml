@@ -191,4 +191,6 @@ lib/
 **/target
 /.vitest
 **/dist
+/lib
 **/*.tsbuildinfo
+**/temp

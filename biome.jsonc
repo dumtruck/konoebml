@@ -1,6 +1,8 @@
 {
   "$schema": "https://biomejs.dev/schemas/1.9.4/schema.json",
-  "extends": ["ultracite"],
+  "extends": [
+    "ultracite"
+  ],
   "linter": {
     "rules": {
       "style": {
@@ -32,13 +34,22 @@
     }
   },
   "files": {
-    "ignore": [".vscode/*.json"]
+    "ignore": [
+      ".vscode/*.json"
+    ]
   },
   "overrides": [
     {
-      "include": ["tests/**"],
+      "include": [
+        "tests/**"
+      ],
       "javascript": {
-        "globals": ["describe", "beforeEach", "it", "expect"]
+        "globals": [
+          "describe",
+          "beforeEach",
+          "it",
+          "expect"
+        ]
       },
       "linter": {
         "rules": {
@@ -47,6 +58,18 @@
           },
           "suspicious": {
             "noMisplacedAssertion": "off"
+          }
+        }
+      }
+    },
+    {
+      "include": [
+        "scripts/**"
+      ],
+      "linter": {
+        "rules": {
+          "suspicious": {
+            "noConsole": "off"
           }
         }
       }

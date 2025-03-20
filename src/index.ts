@@ -18,6 +18,7 @@ export {
   type CreateEbmlTagOptions,
 } from './models/tag-trait';
 export {
+  type EncodeUselessCreateOptionsType,
   createEbmlTag,
   createEbmlTagForManuallyBuild,
 } from './factory';
@@ -31,39 +32,57 @@ export {
   type EbmlStreamDecoderChunkType,
   type EbmlStreamDecoderOptions,
   type EbmlDecodeStreamTransformerOptions,
+  type EbmlDecodeStreamTransformerBackpressure,
 } from './decoder';
 export {
   EbmlStreamEncoder,
   EbmlEncodeStreamTransformer,
+  type EbmlEncodeStreamTransformerBackpressure,
+  type EbmlEncodeStreamTransformerOptions,
+  type EbmlStreamEncoderOptions,
 } from './encoder';
 export {
-  EbmlBlockLacing,
-  EbmlTagIdEnum,
-  EbmlElementType,
-  EbmlTagPosition,
-  type EbmlBinaryDataTagIdType,
-  type EbmlMasterTagIdType,
-  type EbmlBlockTagIdType,
-  type EbmlDataTagIdType,
-  type EbmlDateDataTagIdType,
-  type EbmlFloatDataTagIdType,
-  type EbmlIntDataTagIdType,
-  type EbmlSimpleBlockTagIdType,
-  type EbmlAsciiDataTagIdType,
-  type EbmlUintDataTagIdType,
-  type EbmlUtf8DataTagIdType,
-  type EbmlTagIdType,
-  type EbmlUnknownTagIdType,
-  isEbmlBinaryDataTagId,
-  isEbmlBlockTagId,
-  isEbmlDateDataTagId,
-  isEbmlFloatDataTagId,
-  isEbmlIntDataTagId,
-  isEbmlMasterTagId,
-  isEbmlSimpleBlockTagId,
-  isEbmlStringDataTagId,
-  isEbmlUintDataTagId,
-  isEbmlUtf8DataTagId,
-  isUnknownTagId,
-} from './models/enums';
-export type * from './models/tag';
+  EbmlTreeMasterNotMatchError,
+  ElementIdVintDataAllOnesError,
+  ElementIdVintDataAllZerosError,
+  ElementIdVintDataNotShortestError,
+  VintLengthOutOfRangeError,
+  VintOutOfRangeError,
+  UnreachableOrLogicError,
+  UnsupportLengthForElementTypeError,
+  SizeUnitOutOfSafeIntegerRangeError,
+  StreamFlushReason,
+  OutOfRangeForElementTypeError,
+  InconsistentOffsetOnDecodingContentError,
+  InconsistentWellKnownEbmlTagTypeError,
+} from './errors';
+export {
+  readAscii,
+  readElementIdVint,
+  readFloat,
+  readHexString,
+  readSigned,
+  readUnsigned,
+  readUtf8,
+  readVint,
+  readVintLength,
+  writeAscii,
+  writeElementIdVint,
+  writeFloat,
+  writeSigned,
+  writeUnsigned,
+  writeUtf8,
+  writeVint,
+  checkVintSafeSize,
+  concatArrayBuffers,
+  dataViewSlice,
+  dataViewSliceToBuf,
+  vintToHexString,
+  type Vint,
+  type SafeSizeVint,
+} from './tools';
+export type { FileDataViewController } from './adapters';
+export * from './models/enums';
+export type * from './models/enums';
+export * from './models/tag-union';
+export type * from './models/tag-union';

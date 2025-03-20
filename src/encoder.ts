@@ -1,7 +1,7 @@
 import { Stack } from 'mnemonist';
 import { EbmlTreeMasterNotMatchError, UnreachableOrLogicError } from './errors';
 import { EbmlTagPosition } from './models/enums';
-import type { EbmlTagType } from './models/tag';
+import type { EbmlTagType } from './models/tag-union';
 import { EbmlMasterTag } from './models/tag-master';
 import { EbmlTagTrait } from './models/tag-trait';
 

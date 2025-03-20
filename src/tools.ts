@@ -307,7 +307,7 @@ export function readUnsigned(view: DataView): number | bigint {
       break;
     default:
       throw new UnsupportLengthForElementTypeError(
-        EbmlElementType.UnsignedInt,
+        EbmlElementType.Uint,
         '0~8',
         byteLength
       );
@@ -324,7 +324,7 @@ export function writeUnsigned(
 ): Uint8Array {
   if (num < 0 || num > MAX_UINT64) {
     throw new OutOfRangeForElementTypeError(
-      EbmlElementType.UnsignedInt,
+      EbmlElementType.Uint,
       `0-${MAX_UINT64}`,
       num
     );
@@ -418,7 +418,7 @@ export function writeUnsigned(
     }
     default:
       throw new UnsupportLengthForElementTypeError(
-        EbmlElementType.UnsignedInt,
+        EbmlElementType.Uint,
         '0~8',
         length
       );
@@ -430,7 +430,7 @@ export function readSigned(view: DataView): number | bigint {
   const byteLength = view.byteLength;
   if (byteLength < 0 || byteLength > 8) {
     throw new UnsupportLengthForElementTypeError(
-      EbmlElementType.Integer,
+      EbmlElementType.Int,
       '0~8',
       byteLength
     );
@@ -493,7 +493,7 @@ export function writeSigned(
 ): Uint8Array {
   if (num < MIN_INT64 || num > MAX_INT64) {
     throw new OutOfRangeForElementTypeError(
-      EbmlElementType.Integer,
+      EbmlElementType.Int,
       `${MIN_INT64}~${MAX_INT64}`,
       num
     );
@@ -518,7 +518,7 @@ export function writeSigned(
 
   if (length > 8) {
     throw new UnsupportLengthForElementTypeError(
-      EbmlElementType.Integer,
+      EbmlElementType.Int,
       '0~8',
       length
     );

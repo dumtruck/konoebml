@@ -15,6 +15,7 @@
 
 This package is serving as a fork with extensive rewrites and enhancements to [ebml-web-stream][ebml-web-stream] and [ebml-stream][ebml-stream], providing:
 
+- support new [ebml_matroska(v4)](https://github.com/cellar-wg/matroska-specification/blob/master/ebml_matroska.xml) while also support [legacy version](https://github.com/pymedusa/Medusa/blob/d99638720355ef047857735876ec37adcb6a94a5/ext/enzyme/parsers/ebml/specs/matroska.xml).
 - better [unknown size vint][unknown size vint] support
 - bigint support for vint, unsigned and signed int data type
 - better type system and type hints that depend on it

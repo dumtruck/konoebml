@@ -41,19 +41,19 @@ export class EbmlDataTag extends EbmlTagTrait {
     const offset = controller.getOffset();
     const view = await controller.read(offset, this.contentLength, true);
     switch (this.type) {
-      case EbmlElementType.UnsignedInt:
+      case EbmlElementType.Uint:
         this.data = readUnsigned(view);
         break;
       case EbmlElementType.Float:
         this.data = readFloat(view);
         break;
-      case EbmlElementType.Integer:
+      case EbmlElementType.Int:
         this.data = readSigned(view);
         break;
       case EbmlElementType.Ascii:
         this.data = readAscii(view);
         break;
-      case EbmlElementType.UTF8:
+      case EbmlElementType.Utf8:
         this.data = readUtf8(view);
         break;
       default:
@@ -65,19 +65,19 @@ export class EbmlDataTag extends EbmlTagTrait {
 
   *encodeContent(): Generator<Uint8Array, void, unknown> {
     switch (this.type) {
-      case EbmlElementType.UnsignedInt:
+      case EbmlElementType.Uint:
         yield writeUnsigned(this.data as any);
         break;
       case EbmlElementType.Float:
         yield writeFloat(this.data as any);
         break;
-      case EbmlElementType.Integer:
+      case EbmlElementType.Int:
         yield writeSigned(this.data as any);
         break;
       case EbmlElementType.Ascii:
         yield writeAscii(this.data as any);
         break;
-      case EbmlElementType.UTF8:
+      case EbmlElementType.Utf8:
         yield writeUtf8(this.data as any);
         break;
       default:

@@ -66,7 +66,7 @@ describe('EBML Values in tags', () => {
       makeAVC1StreamTest((tag, done) => {
         if (
           tag instanceof EbmlDataTag &&
-          tag.id === EbmlTagIdEnum.TimecodeScale
+          tag.id === EbmlTagIdEnum.TimestampScale
         ) {
           assert.strictEqual(tag.data, 1000000);
           done();
@@ -142,11 +142,11 @@ describe('EBML Values in tags', () => {
         }
       }));
 
-    it('should get a correct TimeCodeScale value from a video/webm; codecs="vp8" file (3-byte unsigned int)', () =>
+    it('should get a correct TimestamScale value from a video/webm; codecs="vp8" file (3-byte unsigned int)', () =>
       makeVP8StreamTest((tag, done) => {
         if (
           tag instanceof EbmlDataTag &&
-          tag.id === EbmlTagIdEnum.TimecodeScale
+          tag.id === EbmlTagIdEnum.TimestampScale
         ) {
           assert.strictEqual(tag.data, 1000000);
           done();

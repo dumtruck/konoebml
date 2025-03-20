@@ -12,7 +12,10 @@ export default defineConfig({
       dts: {
         bundle: false,
         build: false,
-        distPath: './dist',
+        distPath: './lib',
+      },
+      output: {
+        distPath: {},
       },
       source: {
         entry: {
@@ -34,5 +37,8 @@ export default defineConfig({
   ],
   output: {
     target: 'web',
+    distPath: {
+      root: './lib',
+    },
   },
 });

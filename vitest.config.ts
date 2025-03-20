@@ -21,6 +21,7 @@ export default defineConfig({
         'scripts/**',
         'examples/**',
         'dist/**',
+        'lib/**',
       ],
     },
   },

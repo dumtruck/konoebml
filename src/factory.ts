@@ -6,16 +6,9 @@ import {
   type EbmlMasterTagIdType,
   type EbmlSimpleBlockTagIdType,
   EbmlTagIdEnum,
-  isEbmlBinaryDataTagId,
   isEbmlBlockTagId,
-  isEbmlDateDataTagId,
-  isEbmlFloatDataTagId,
-  isEbmlIntDataTagId,
-  isEbmlMasterTagId,
   isEbmlSimpleBlockTagId,
-  isEbmlStringDataTagId,
-  isEbmlUintDataTagId,
-  isEbmlUtf8DataTagId,
+  getEbmlTypeByTagId,
 } from './models/enums';
 import {
   type CreateEbmlBlockTagOptions,
@@ -57,36 +50,22 @@ export function createEbmlTag(
   options: Omit<CreateEbmlTagOptions, 'id'>
 ): EbmlTagTrait;
 
-// biome-ignore lint/complexity/noExcessiveCognitiveComplexity: <explanation>
 export function createEbmlTag(arg1: unknown, arg2: unknown): EbmlTagTrait {
   const id = arg1 as EbmlTagIdEnum;
   const options = arg2 as Omit<CreateEbmlTagOptions, 'id'>;
   let type: EbmlElementType | undefined = options.type;
   if (EbmlTagIdEnum[id] !== undefined) {
     let foundType: EbmlElementType | undefined;
+    // adhoc start
     if (isEbmlBlockTagId(id)) {
       return new EbmlBlockTag({ ...options, id });
     }
     if (isEbmlSimpleBlockTagId(id)) {
       return new EbmlSimpleBlockTag({ ...options });
     }
-    if (isEbmlMasterTagId(id)) {
-      foundType = EbmlElementType.Master;
-    } else if (isEbmlUintDataTagId(id)) {
-      foundType = EbmlElementType.UnsignedInt;
-    } else if (isEbmlIntDataTagId(id)) {
-      foundType = EbmlElementType.Integer;
-    } else if (isEbmlFloatDataTagId(id)) {
-      foundType = EbmlElementType.Float;
-    } else if (isEbmlStringDataTagId(id)) {
-      foundType = EbmlElementType.Ascii;
-    } else if (isEbmlUtf8DataTagId(id)) {
-      foundType = EbmlElementType.UTF8;
-    } else if (isEbmlDateDataTagId(id)) {
-      foundType = EbmlElementType.Date;
-    } else if (isEbmlBinaryDataTagId(id)) {
-      foundType = EbmlElementType.Binary;
-    }
+    // adhoc end
+
+    foundType = getEbmlTypeByTagId(id);
 
     if (type === undefined) {
       type = foundType;

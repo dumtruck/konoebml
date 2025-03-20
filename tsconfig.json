@@ -2,7 +2,9 @@
   "extends": "./tsconfig.base.json",
   "files": [],
   "include": [],
-  "exclude": ["node_modules"],
+  "exclude": [
+    "node_modules"
+  ],
   "references": [
     {
       "path": "./tsconfig.lib.json"
@@ -12,6 +14,9 @@
     },
     {
       "path": "./tsconfig.example.json"
+    },
+    {
+      "path": "./tsconfig.scripts.json"
     }
   ]
 }

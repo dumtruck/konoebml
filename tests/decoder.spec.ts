@@ -90,7 +90,7 @@ describe('Ebml Decoder', () => {
     assert.strictEqual(tag.position, EbmlTagPosition.Content);
     assert.strictEqual(tag.id.toString(16), '4286');
     assert.strictEqual(tag.contentLength, 0x01);
-    assert.strictEqual(tag.type, EbmlElementType.UnsignedInt);
+    assert.strictEqual(tag.type, EbmlElementType.Uint);
     assert.ok(tag instanceof EbmlDataTag);
     assert.deepStrictEqual(tag.data, 1);
   });
