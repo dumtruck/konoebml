@@ -92,20 +92,20 @@ export class EbmlBlockTag extends EbmlDataTag {
     const flags: number = view.getUint8(track.length + 2);
     this.invisible = Boolean(flags & 0x10);
     this.payload = dataViewSliceToBuf(view, track.length + 3, undefined);
-    switch (flags & 0x0c) {
-      case 0x00:
+    switch ((flags >> 1) & 0b11) {
+      case 0b00:
         this.lacing = EbmlBlockLacing.None;
         break;
 
-      case 0x04:
+      case 0b01:
         this.lacing = EbmlBlockLacing.Xiph;
         break;
 
-      case 0x08:
+      case 0b11:
         this.lacing = EbmlBlockLacing.EBML;
         break;
 
-      case 0x0c:
+      case 0b10:
         this.lacing = EbmlBlockLacing.FixedSize;
         break;
       default:
