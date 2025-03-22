@@ -110,7 +110,7 @@ export class EbmlBlockTag extends EbmlDataTag {
         break;
       default:
     }
-    this.decodeFrames();
+    this.frames = this.decodeFrames();
     await controller.seek(offset + view.byteLength);
   }
 
