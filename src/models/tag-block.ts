@@ -152,7 +152,7 @@ export class EbmlBlockTag extends EbmlDataTag {
         offset += vint.length;
       }
     }
-    this.lacingLength = size;
+    this.lacingLength = offset;
 
     return sizes;
   }
@@ -167,6 +167,7 @@ export class EbmlBlockTag extends EbmlDataTag {
         frames.push(new DataView(this.payload.buffer, acc, size));
         acc += size;
       }
+      frames.push(new DataView(this.payload.buffer, acc));
       return frames;
     }
     if (this.lacing === EbmlBlockLacing.Xiph) {
@@ -178,6 +179,7 @@ export class EbmlBlockTag extends EbmlDataTag {
         frames.push(new DataView(this.payload.buffer, acc, size));
         acc += size;
       }
+      frames.push(new DataView(this.payload.buffer, acc));
       return frames;
     }
     if (this.lacing === EbmlBlockLacing.FixedSize) {
