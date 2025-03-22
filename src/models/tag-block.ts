@@ -29,7 +29,7 @@ export class EbmlBlockTag extends EbmlDataTag {
 
   invisible: boolean | undefined;
   lacing: EbmlBlockLacing | undefined;
-  frames: DataView[] = [];
+  frames: Uint8Array[] = [];
   lacingLength?: number;
 
   constructor(options: CreateEbmlBlockTagOptions) {
@@ -157,29 +157,29 @@ export class EbmlBlockTag extends EbmlDataTag {
     return sizes;
   }
 
-  private decodeFrames(): DataView[] {
+  private decodeFrames(): Uint8Array[] {
     if (this.lacing === EbmlBlockLacing.EBML) {
       const framesNumMinus = this.payload[0];
       const sizes = this.readEbmlSizes(framesNumMinus);
-      const frames: DataView[] = [];
+      const frames: Uint8Array[] = [];
       let acc = this.lacingLength!;
       for (const size of sizes) {
-        frames.push(new DataView(this.payload.buffer, acc, size));
+        frames.push(this.payload.slice(acc, acc + size));
         acc += size;
       }
-      frames.push(new DataView(this.payload.buffer, acc));
+      frames.push(this.payload.slice(acc));
       return frames;
     }
     if (this.lacing === EbmlBlockLacing.Xiph) {
       const framesNumMinus = this.payload[0];
       const sizes = this.readXiphSizes(framesNumMinus);
-      const frames: DataView[] = [];
+      const frames: Uint8Array[] = [];
       let acc = this.lacingLength!;
       for (const size of sizes) {
-        frames.push(new DataView(this.payload.buffer, acc, size));
+        frames.push(this.payload.slice(acc, acc + size));
         acc += size;
       }
-      frames.push(new DataView(this.payload.buffer, acc));
+      frames.push(this.payload.slice(acc));
       return frames;
     }
     if (this.lacing === EbmlBlockLacing.FixedSize) {
@@ -187,14 +187,14 @@ export class EbmlBlockTag extends EbmlDataTag {
       this.lacingLength = 1;
       const size = (this.payload.length - 1) / frameNum;
       let offset = 1;
-      const frames: DataView[] = [];
+      const frames: Uint8Array[] = [];
       for (let i = 0; i < frameNum; i++) {
-        frames.push(new DataView(this.payload.buffer, offset, size));
+        frames.push(this.payload.slice(offset, offset + size));
         offset += size;
       }
       return frames;
     }
-    return [new DataView(this.payload.buffer)];
+    return [this.payload];
   }
 
   override toDebugRecord() {

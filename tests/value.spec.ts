@@ -384,7 +384,7 @@ describe('EBML Values in tags', () => {
         180, 180, 180, 180, 180, 180, 180, 180, 180, 180, 180, 180, 180, 180,
         180, 180, 188,
       ]);
-      const frames: DataView[] = (block as any).decodeFrames();
+      const frames: Uint8Array[] = (block as any).decodeFrames();
       assert.equal(frames.length, 8);
       assert.deepEqual(
         [371, 372, 371, 372, 371, 372, 371, 372],
