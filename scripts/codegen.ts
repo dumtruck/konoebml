@@ -2,7 +2,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { Window, type Element } from 'happy-dom';
 import { type } from 'arktype';
-import { omitBy, isNil, isEqual } from 'lodash-es';
+import { omitBy, isNil } from 'lodash-es';
 import { kebabCase } from 'change-case';
 
 export const AdHocType = {

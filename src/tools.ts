@@ -199,6 +199,23 @@ export function readVint(view: DataView): Vint | null {
   };
 }
 
+export function readSignedVint(view: DataView): Vint | null {
+  const vint = readVint(view);
+  if (!vint) {
+    return vint;
+  }
+  // Convert to a signed integer by range shifting.
+  const halfRange = 2n ** BigInt(vint.length * 7 - 1) - 1n;
+  const result = BigInt(vint.value) - halfRange;
+  return {
+    length: vint.length,
+    value:
+      result >= Number.MIN_SAFE_INTEGER && result <= Number.MAX_SAFE_INTEGER
+        ? Number(result)
+        : result,
+  };
+}
+
 export function readElementIdVint(view: DataView): Vint | null {
   const vint = readVint(view);
   if (!vint) {
